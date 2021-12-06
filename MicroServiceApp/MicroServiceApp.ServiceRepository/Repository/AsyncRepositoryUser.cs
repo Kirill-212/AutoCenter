@@ -25,6 +25,7 @@ namespace MicroServiceApp.ServiceRepository.Repository
         public async Task<User> GetByEmail(string email)
         {
             return await _context.Users
+                .Include(i=>i.Role)
                 .Where(i => i.Email == email)
                 .FirstOrDefaultAsync();
         }

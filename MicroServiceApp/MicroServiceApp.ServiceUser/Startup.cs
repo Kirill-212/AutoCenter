@@ -11,6 +11,9 @@ using System;
 using Microsoft.Extensions.Hosting;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 using MicroServiceApp.InfrastructureLayer.ConsulSettings;
+using Microsoft.IdentityModel.Tokens;
+using MicroServiceApp.InfrastructureLayer.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MicroServiceApp.ServiceUser
 {
@@ -26,6 +29,26 @@ namespace MicroServiceApp.ServiceUser
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = AuthOptions.ISSUER,
+                ValidateAudience = true,
+                ValidAudience = AuthOptions.AUDIENCE,
+                ValidateLifetime = true,
+                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                ValidateIssuerSigningKey = true,
+            };
+
+            services.AddAuthentication("TestKey").AddJwtBearer("TestKey", x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.TokenValidationParameters = tokenValidationParameters;
+            })
+            .AddCookie(CookieAuthenticationDefaults
+                .AuthenticationScheme, options => Configuration.Bind("CookieSettings", options)
+                );
+
             services.AddTransient<
                 IAsyncHttpClientRole<Role>,
                 AsyncHttpClientForUserService<Role>>();
@@ -61,11 +84,10 @@ namespace MicroServiceApp.ServiceUser
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseRouting();
-
             app.UseAuthorization();
-
             var consulOption = new ConsulOption
             {
                 ServiceName = Configuration["ServiceName"],
@@ -79,6 +101,7 @@ namespace MicroServiceApp.ServiceUser
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

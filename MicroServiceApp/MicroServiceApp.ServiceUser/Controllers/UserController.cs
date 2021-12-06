@@ -2,6 +2,7 @@
 using MicroServiceApp.InfrastructureLayer.Dto;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceUser.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace MicroServiceApp.ServiceUser.Controllers
             return await asyncService.GetByEmail(email);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public async Task<IEnumerable<User>> GetAll()
         {

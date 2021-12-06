@@ -20,7 +20,11 @@
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceUser/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     },
     {
       "UseServiceDiscovery": true,
@@ -43,6 +47,17 @@
       },
       "UpstreamPathTemplate": "/ServiceCar/{url}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "UseServiceDiscovery": true,
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "https",
+      "ServiceName": "ServiceAuth",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "UpstreamPathTemplate": "/ServiceAuth/{url}",
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {

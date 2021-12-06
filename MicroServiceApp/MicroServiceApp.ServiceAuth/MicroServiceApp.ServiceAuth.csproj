@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ocelot" Version="17.0.0" />
-    <PackageReference Include="Ocelot.Provider.Consul" Version="17.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\MicroServiceApp.HttpClientLayer\MicroServiceApp.HttpClientLayer.csproj" />
     <ProjectReference Include="..\MicroServiceApp.InfrastructureLayer\MicroServiceApp.InfrastructureLayer.csproj" />
   </ItemGroup>
 
