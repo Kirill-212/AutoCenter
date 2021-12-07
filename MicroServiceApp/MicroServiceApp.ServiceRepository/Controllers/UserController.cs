@@ -1,5 +1,6 @@
 ﻿using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceRepository.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,6 +30,13 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryUser.GetByEmail(email);
         }
 
+        [HttpGet("GetByEmailValidAttr")]
+        public async Task<User> GetByEmailValidAttr([FromQuery] string email)
+        {
+            return await asyncRepositoryUser.GetByEmail(email);
+        }
+
+        [Authorize(Roles = "ADMIN, EMPLOYEE")]
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {

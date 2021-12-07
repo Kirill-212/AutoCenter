@@ -24,24 +24,6 @@ namespace MicroServiceApp.ApiGateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = AuthOptions.ISSUER,
-                ValidateAudience = true,
-                ValidAudience = AuthOptions.AUDIENCE,
-                ValidateLifetime = true,
-                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                ValidateIssuerSigningKey = true,
-            };
-            services.AddAuthentication("TestKey").AddJwtBearer("TestKey", x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.TokenValidationParameters = tokenValidationParameters;
-            })
-               .AddCookie(CookieAuthenticationDefaults
-                .AuthenticationScheme, options => Configuration.Bind("CookieSettings", options)
-                );
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             services.AddControllers();
             services.AddOcelot(
@@ -53,18 +35,13 @@ namespace MicroServiceApp.ApiGateway
 
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseAuthentication();
             await app.UseOcelot();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

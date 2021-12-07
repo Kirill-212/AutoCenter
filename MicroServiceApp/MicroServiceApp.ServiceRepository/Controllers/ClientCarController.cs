@@ -25,6 +25,12 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryClientCar.GetByRegisterNumber(registerNumber);
         }
 
+        [HttpGet("GetByRegisterNumberValidAttr")]
+        public async Task<ClientCar> GetByRegisterNumberValidAttr([FromQuery] string registerNumber)
+        {
+            return await asyncRepositoryClientCar.GetByRegisterNumber(registerNumber);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<ClientCar>> Get()
         {

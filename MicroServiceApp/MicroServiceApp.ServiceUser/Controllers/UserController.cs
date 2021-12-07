@@ -37,13 +37,14 @@ namespace MicroServiceApp.ServiceUser.Controllers
             return await asyncService.GetByEmail(email);
         }
 
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN, EMPLOYEE")]
         [HttpGet]
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await asyncService.GetAll();
+            return await asyncService.GetAll(Request.Headers["Authorization"]);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<User> GetbyId(int id)
         {

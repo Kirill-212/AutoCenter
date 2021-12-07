@@ -8,5 +8,7 @@ namespace MicroServiceApp.HttpClientLayer
         Task<int> RemoveRange(List<T> items);
 
         Task<int> AddRange(List<T> items);
+
+        IAsyncHttlClientImg<T> SetJwt(string jwt = null);
     }
 }

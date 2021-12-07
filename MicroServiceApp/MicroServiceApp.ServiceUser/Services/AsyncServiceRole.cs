@@ -16,9 +16,9 @@ namespace MicroServiceApp.ServiceUser.Services
             this.httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Role>> GetAll()
+        public async Task<IEnumerable<Role>> GetAll(string jwt = null)
         {
-            return await httpClient.GetAll();
+            return await httpClient.SetJwt(jwt).GetAll();
         }
     }
 }

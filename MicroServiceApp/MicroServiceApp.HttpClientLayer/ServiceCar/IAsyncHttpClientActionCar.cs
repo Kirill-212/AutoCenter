@@ -8,5 +8,7 @@ namespace MicroServiceApp.HttpClientLayer.ServiceCar
         Task<T> GetBySharePercentage(int sharePercentage);
 
         Task<int> DeleteAll(List<T> items);
+
+        IAsyncHttpClientActionCar<T> SetJwt(string jwt = null);
     }
 }

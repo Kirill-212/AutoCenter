@@ -5,14 +5,14 @@ namespace MicroServiceApp.ServiceUser.Services
 {
     public interface IAsyncService<T>
     {
-        Task<int> Create(T item);
+        Task<int> Create(T item, string jwt = null);
 
-        Task<T> FindById(int id);
+        Task<T> FindById(int id, string jwt = null);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(string jwt = null);
 
-        Task<int> Remove(string email);
+        Task<int> Remove(string email, string jwt = null);
 
-        Task<int> Update(T item);
+        Task<int> Update(T item, string jwt = null);
     }
 }

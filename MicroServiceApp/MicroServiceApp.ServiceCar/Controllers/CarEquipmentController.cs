@@ -67,6 +67,12 @@ namespace MicroServiceApp.ServiceCar.Controllers
             return Ok(mapper.Map<CarEquipmentDto>(await asyncService.GetByName(name)));
         }
 
+        [HttpGet("GetByNameValidAttr")]
+        public async Task<ActionResult<CarEquipmentDto>> GetByNameValidAttr([FromQuery] string name)
+        {
+            return Ok(mapper.Map<CarEquipmentDto>(await asyncService.GetByName(name)));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CarEquipmentDto>> GetById(string id)
         {

@@ -26,10 +26,26 @@ namespace MicroServiceApp.HttpClientLayer
             return await response.Content.ReadAsAsync<T>();
         }
 
+        public async Task<T> GetByEmailValidAttr(string email)
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByEmailValidAttr" + "?email=" + email);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
         public async Task<T> GetByUserEmail(string email)
         {
             var response = await httpClient
                 .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByUserEmail" + "?email=" + email);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<T> GetByUserEmailValidAttr(string email)
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByUserEmailValidAttr" + "?email=" + email);
 
             return await response.Content.ReadAsAsync<T>();
         }
@@ -40,6 +56,36 @@ namespace MicroServiceApp.HttpClientLayer
                 .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByUserId" + "?userId=" + id);
 
             return await response.Content.ReadAsAsync<T>();
+        }
+
+        IAsyncHttpClientEmployee<T> IAsyncHttpClientEmployee<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientUser<T> IAsyncHttpClientUser<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientRole<T> IAsyncHttpClientRole<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
         }
     }
 }

@@ -20,11 +20,7 @@
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceUser/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
       "UseServiceDiscovery": true,

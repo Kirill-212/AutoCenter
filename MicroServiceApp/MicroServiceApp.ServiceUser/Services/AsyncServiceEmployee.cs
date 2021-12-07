@@ -24,7 +24,7 @@ namespace MicroServiceApp.ServiceUser.Services
             this.httpClientEmployee = httpClient;
         }
 
-        public async Task<int> Create(PostEmployeeDto item)
+        public async Task<int> Create(PostEmployeeDto item, string jwt = null)
         {
             User getUser = await httpClientUser.GetByEmail(item.Email);
             Employee empAdd = mapper.Map<Employee>(item);
@@ -34,47 +34,47 @@ namespace MicroServiceApp.ServiceUser.Services
             getUser.Status = Status.ACTIVE;
             getUser.RoleId = item.RoleId;
 
-            return await httpClientUser.Update(getUser) == 200 ?
-                await httpClientEmployee.Add(empAdd) : 404;
+            return await httpClientUser.SetJwt(jwt).Update(getUser) == 200 ?
+                await httpClientEmployee.SetJwt(jwt).Add(empAdd) : 404;
         }
 
-        public async Task<Employee> FindById(int id)
+        public async Task<Employee> FindById(int id, string jwt = null)
         {
-            return await httpClientEmployee.GetById(id);
+            return await httpClientEmployee.SetJwt(jwt).GetById(id);
         }
 
-        public async Task<Employee> FindByUserEmail(string email)
+        public async Task<Employee> FindByUserEmail(string email, string jwt = null)
         {
-            return await httpClientEmployee.GetByUserEmail(email);
+            return await httpClientEmployee.SetJwt(jwt).GetByUserEmail(email);
         }
 
-        public async Task<IEnumerable<Employee>> GetAll()
+        public async Task<IEnumerable<Employee>> GetAll(string jwt = null)
         {
-            return await httpClientEmployee.GetAll();
+            return await httpClientEmployee.SetJwt(jwt).GetAll();
         }
 
-        public async Task<int> Remove(string email)
+        public async Task<int> Remove(string email, string jwt = null)
         {
-            Employee employee = await httpClientEmployee.GetByUserEmail(email);
+            Employee employee = await httpClientEmployee.SetJwt(jwt).GetByUserEmail(email);
 
-            return employee == null ? 404 : await httpClientEmployee.Remove(employee.Id);
+            return employee == null ? 404 : await httpClientEmployee.SetJwt(jwt).Remove(employee.Id);
         }
 
-        public async Task<int> Update(PutEmployeeDto item)
+        public async Task<int> Update(PutEmployeeDto item, string jwt = null)
         {
-            User getUser = await httpClientUser.GetByEmail(item.Email);
-            Employee empPut = await httpClientEmployee.GetByUserId(getUser.Id);
+            User getUser = await httpClientUser.SetJwt(jwt).GetByEmail(item.Email);
+            Employee empPut = await httpClientEmployee.SetJwt(jwt).GetByUserId(getUser.Id);
             empPut.UserId = getUser.Id;
             empPut.Address = item.Address;
 
             if (getUser.RoleId != item.RoleId)
             {
                 getUser.RoleId = item.RoleId;
-                return await httpClientUser.Update(getUser) == 200 ?
-                     await httpClientEmployee.Update(empPut) : 404;
+                return await httpClientUser.SetJwt(jwt).Update(getUser) == 200 ?
+                     await httpClientEmployee.SetJwt(jwt).Update(empPut) : 404;
             }
 
-            return await httpClientEmployee.Update(empPut);
+            return await httpClientEmployee.SetJwt(jwt).Update(empPut);
         }
     }
 }

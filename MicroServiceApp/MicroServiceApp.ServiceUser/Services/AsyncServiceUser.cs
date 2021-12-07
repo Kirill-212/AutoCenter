@@ -15,56 +15,57 @@ namespace MicroServiceApp.ServiceUser.Services
             IAsyncHttpClientUser<User> httpClient
             )
         {
-            this.httpClientUser = httpClient;
+            httpClientUser = httpClient;
         }
 
-        public async Task<int> Create(User item)
+        public async Task<int> Create(User item, string jwt = null)
         {
             item.Password = HashPassword
                 .HashPasswordUser(item.Password, System.Text.Encoding.UTF8.GetBytes("-qwert"));
             item.Status = Status.CREATED;
             item.RoleId = 2;
 
-            return await httpClientUser.Add(item);
+            return await httpClientUser.SetJwt(jwt).Add(item);
         }
 
-        public async Task<User> FindById(int id)
+        public async Task<User> FindById(int id, string jwt = null)
         {
-            return await httpClientUser.GetById(id);
+            
+            return await httpClientUser.SetJwt(jwt).GetById(id);
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll(string jwt = null)
         {
-            return await httpClientUser.GetAll();
+            return await httpClientUser.SetJwt(jwt).GetAll();
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersNotAddedToEmp()
+        public async Task<IEnumerable<User>> GetAllUsersNotAddedToEmp(string jwt = null)
         {
-            return await httpClientUser.GetAllUsersNotAddedToEmp();
+            return await httpClientUser.SetJwt(jwt).GetAllUsersNotAddedToEmp();
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User> GetByEmail(string email, string jwt = null)
         {
-            return await httpClientUser.GetByEmail(email);
+            return await httpClientUser.SetJwt(jwt).GetByEmail(email);
         }
 
-        public async Task<int> Remove(string email)
+        public async Task<int> Remove(string email, string jwt = null)
         {
-            User user = await httpClientUser.GetByEmail(email);
+            User user = await httpClientUser.SetJwt(jwt).GetByEmail(email);
 
-            return user == null ? 404 : await httpClientUser.Remove(user.Id);
+            return user == null ? 404 : await httpClientUser.SetJwt(jwt).Remove(user.Id);
         }
 
-        public async Task<int> Update(User item)
+        public async Task<int> Update(User item, string jwt = null)
         {
-            User getUserInfo = await httpClientUser.GetByEmail(item.Email);
+            User getUserInfo = await httpClientUser.SetJwt(jwt).GetByEmail(item.Email);
             item.Password = HashPassword
                 .HashPasswordUser(item.Password, System.Text.Encoding.UTF8.GetBytes("-qwert"));
             item.Id = getUserInfo.Id;
             item.Status = getUserInfo.Status;
             item.RoleId = getUserInfo.RoleId;
 
-            return await httpClientUser.Update(item);
+            return await httpClientUser.SetJwt(jwt).Update(item);
         }
     }
 }

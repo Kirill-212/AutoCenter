@@ -5,6 +5,6 @@ namespace MicroServiceApp.ServiceUser.Services
 {
     public interface IAsyncServiceRole<T>
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(string jwt = null);
     }
 }

@@ -12,7 +12,7 @@ namespace MicroServiceApp.InfrastructureLayer.CustomValidationAttribute
         {
             if (value != null)
             {
-                var result = httpClient.GetByName((string)value).Result;
+                var result = httpClient.GetByNameValidAttr((string)value).Result;
                 if (result == null)
                 {
                     return true;

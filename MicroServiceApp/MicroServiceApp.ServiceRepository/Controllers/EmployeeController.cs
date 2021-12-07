@@ -25,6 +25,12 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryEmployee.FindByUserEmail(email);
         }
 
+        [HttpGet("GetByUserEmailValidAttr")]
+        public async Task<Employee> GetByUserEmailValidAttr([FromQuery] string email)
+        {
+            return await asyncRepositoryEmployee.FindByUserEmail(email);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Employee>> Get()
         {

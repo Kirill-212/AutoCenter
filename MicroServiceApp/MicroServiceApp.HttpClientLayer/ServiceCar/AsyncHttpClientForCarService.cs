@@ -23,10 +23,26 @@ namespace MicroServiceApp.HttpClientLayer
             return await response.Content.ReadAsAsync<T>();
         }
 
+        public async Task<T> GetByVinValidAttr(string vin)
+        {
+            var response = await httpClient
+               .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByVinValidAttr?vin=" + vin);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
         public async Task<T> GetByName(string name)
         {
             var response = await httpClient
                 .GetAsync(URI_CAR_SERVICE + typeof(T).Name + "/GetByName?name=" + name);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<T> GetByNameValidAttr(string name)
+        {
+            var response = await httpClient
+                .GetAsync(URI_CAR_SERVICE + typeof(T).Name + "/GetByNameValidAttr?name=" + name);
 
             return await response.Content.ReadAsAsync<T>();
         }
@@ -69,6 +85,64 @@ namespace MicroServiceApp.HttpClientLayer
                 .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByRegisterNumber?registerNumber=" + registerNumber);
 
             return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<T> GetByRegisterNumberValidAttr(string registerNumber)
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByRegisterNumberValidAttr?registerNumber=" + registerNumber);
+
+            return await response.Content.ReadAsAsync<T>(); ;
+        }
+
+        public IAsyncHttpClientCar<T> SetJwt(string jwt = null)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientCarEquipment<T> IAsyncHttpClientCarEquipment<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientActionCar<T> IAsyncHttpClientActionCar<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientOrder<T> IAsyncHttpClientOrder<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientClientCar<T> IAsyncHttpClientClientCar<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
         }
     }
 }

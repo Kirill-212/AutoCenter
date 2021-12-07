@@ -12,7 +12,7 @@ namespace MicroServiceApp.InfrastructureLayer.CustomValidationAttribute
         {
             if (value != null)
             {
-                var result = httpClientClientCar.GetByRegisterNumber((string)value).Result;
+                var result = httpClientClientCar.GetByRegisterNumberValidAttr((string)value).Result;
                 if (result != null)
                 {
                     return true;

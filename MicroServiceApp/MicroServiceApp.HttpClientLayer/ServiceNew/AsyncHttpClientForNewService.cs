@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroServiceApp.HttpClientLayer
 {
-    public class AsyncHttpClientForNewService<T> : 
+    public class AsyncHttpClientForNewService<T> :
         AsyncHttpClientBasicForService<T>,
         IAsyncHttpClientNew<T>,
         IAsyncHttpClientUserForNew<T>,
@@ -16,6 +16,14 @@ namespace MicroServiceApp.HttpClientLayer
         {
             var response = await httpClient
                 .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByTitle" + "?title=" + title);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<T> GetByTitleValidAttr(string title)
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByTitleValidAttr" + "?title=" + title);
 
             return await response.Content.ReadAsAsync<T>();
         }
@@ -50,6 +58,36 @@ namespace MicroServiceApp.HttpClientLayer
                 ));
 
             return (int)response.StatusCode;
+        }
+
+        public IAsyncHttpClientNew<T> SetJwt(string jwt = null)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttpClientUserForNew<T> IAsyncHttpClientUserForNew<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        IAsyncHttlClientImg<T> IAsyncHttlClientImg<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
         }
     }
 }

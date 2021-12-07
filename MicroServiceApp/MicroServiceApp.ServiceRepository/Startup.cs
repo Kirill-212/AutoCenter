@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 using Microsoft.EntityFrameworkCore;
+using MicroServiceApp.InfrastructureLayer.Auth;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MicroServiceApp.ServiceRepository
 {
@@ -24,7 +27,21 @@ namespace MicroServiceApp.ServiceRepository
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                     .AddJwtBearer(options =>
+                     {
+                         options.RequireHttpsMetadata = false;
+                         options.TokenValidationParameters = new TokenValidationParameters
+                         {
+                             ValidateIssuer = true,
+                             ValidIssuer = AuthOptions.ISSUER,
+                             ValidateAudience = true,
+                             ValidAudience = AuthOptions.AUDIENCE,
+                             ValidateLifetime = true,
+                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                             ValidateIssuerSigningKey = true,
+                         };
+                     });
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ContextDb>(options =>
                 options.UseSqlServer(connection));
@@ -61,11 +78,9 @@ namespace MicroServiceApp.ServiceRepository
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             var consulOption = new ConsulOption
             {

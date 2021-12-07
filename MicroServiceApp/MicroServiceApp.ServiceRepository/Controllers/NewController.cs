@@ -29,6 +29,12 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryNew.GetByTitle(title);
         }
 
+        [HttpGet("GetByTitleValidAttr")]
+        public async Task<New> GetByTitleValidAttr([FromQuery] string title)
+        {
+            return await asyncRepositoryNew.GetByTitle(title);
+        }
+
         [HttpGet("{id}")]
         public async Task<New> GetbyId(int id)
         {

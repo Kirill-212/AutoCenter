@@ -29,6 +29,12 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryCar.GetByVin(vin);
         }
 
+        [HttpGet("GetByVinValidAttr")]
+        public async Task<Car> GetByVinValidAttr([FromQuery] string vin)
+        {
+            return await asyncRepositoryCar.GetByVin(vin);
+        }
+
         [HttpGet("{id}")]
         public async Task<Car> GetbyId(int id)
         {

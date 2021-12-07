@@ -6,16 +6,16 @@ namespace MicroServiceApp.ServiceUser.Services
 {
     public interface IAsyncServiceEmployee<T>
     {
-        Task<int> Create(PostEmployeeDto item);
+        Task<int> Create(PostEmployeeDto item, string jwt = null);
 
-        Task<T> FindById(int id);
+        Task<T> FindById(int id, string jwt = null);
 
-        Task<T> FindByUserEmail(string email);
+        Task<T> FindByUserEmail(string email, string jwt = null);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(string jwt = null);
 
-        Task<int> Remove(string email);
+        Task<int> Remove(string email, string jwt = null);
 
-        Task<int> Update(PutEmployeeDto item);
+        Task<int> Update(PutEmployeeDto item, string jwt = null);
     }
 }
