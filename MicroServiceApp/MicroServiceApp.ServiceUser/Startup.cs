@@ -29,6 +29,7 @@ namespace MicroServiceApp.ServiceUser
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
                      {
@@ -77,8 +78,12 @@ namespace MicroServiceApp.ServiceUser
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
+
             app.UseAuthentication();
             app.UseAuthorization();
             var consulOption = new ConsulOption

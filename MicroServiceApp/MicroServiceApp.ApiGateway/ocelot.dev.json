@@ -3,61 +3,61 @@
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "ServiceRepository",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceRepository/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "ServiceUser",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceUser/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "ServiceNew",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceNew/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "ServiceCar",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceCar/{url}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
     {
       "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "ServiceName": "ServiceAuth",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
       "UpstreamPathTemplate": "/ServiceAuth/{url}",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:44356",
+    "BaseUrl": "http://localhost:37766",
     "ServiceDiscoveryProvider": {
       "Host": "localhost",
       "Port": 8500,

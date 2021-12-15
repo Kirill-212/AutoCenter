@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MicroServiceApp.InfrastructureLayer.Models
 {
@@ -23,5 +24,7 @@ namespace MicroServiceApp.InfrastructureLayer.Models
         public int? ActionCarId { get; set; }
 
         public ActionCar ActionCar { get; set; }
+
+        public List<TestDrive> TestDrives { get; set; }
     }
 }

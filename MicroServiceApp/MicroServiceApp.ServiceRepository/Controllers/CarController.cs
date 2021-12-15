@@ -17,10 +17,34 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             this.asyncRepositoryCar = asyncRepositoryCar;
         }
 
+        [HttpGet("GetCarForUser")]
+        public async Task<IEnumerable<Car>> GetCarForUser()
+        {
+            return await asyncRepositoryCar.GetCarForUser();
+        }
+
+        [HttpGet("GetCarByEmail")]
+        public async Task<IEnumerable<Car>> GetCarByEmail([FromQuery] string email)
+        {
+            return await asyncRepositoryCar.GetCarByEmail(email);
+        }
+
+        [HttpGet("GetByVinNotAddedEmpValidAttr")]
+        public async Task<Car> GetByVinNotAddedEmpValidAttr([FromQuery] string vin)
+        {
+            return await asyncRepositoryCar.GetByVinNotAddedEmp(vin);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Car>> Get()
         {
             return await asyncRepositoryCar.Get();
+        }
+
+        [HttpGet("GetWithoutClientCar")]
+        public async Task<IEnumerable<Car>> GetWithoutClientCar()
+        {
+            return await asyncRepositoryCar.GetWithoutClientCar();
         }
 
         [HttpGet("GetByVin")]

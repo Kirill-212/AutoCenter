@@ -31,6 +31,13 @@ namespace MicroServiceApp.ServiceNew.Controllers
             return return_new == null ? BadRequest() : return_new;
         }
 
+        [HttpGet("GetByTitle")]
+        public async Task<ActionResult<New>> GetbyTitle([FromQuery]string title)
+        {
+            New return_new = await asyncService.GetByTitile(title);
+            return return_new == null ? BadRequest() : return_new;
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] NewWrapperDto<PostNewDto> item)
         {

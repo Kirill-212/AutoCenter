@@ -57,6 +57,31 @@ namespace MicroServiceApp.ServiceCar.Services
             return await asyncHttpClientCar.GetById(id);
         }
 
+        public async Task<Car> GetByVin(string vin)
+        {
+            return await asyncHttpClientCar.GetByVin(vin);
+        }
+
+        public async Task<Car> GetByVinNotAddedEmpValidAttr(string vin)
+        {
+            return await asyncHttpClientCar.GetByVinNotAddedEmpValidAttr(vin);
+        }
+
+        public async Task<IEnumerable<Car>> GetCarByEmail(string email)
+        {
+            return await asyncHttpClientCar.GetCarByEmail(email);
+        }
+
+        public async Task<IEnumerable<Car>> GetCarForUser()
+        {
+            return await asyncHttpClientCar.GetCarForUser();
+        }
+
+        public async Task<IEnumerable<Car>> GetWithoutClientCar()
+        {
+            return await asyncHttpClientCar.GetWithoutClientCar();
+        }
+
         public async Task<int> Remove(string vin)
         {
             Car car = await asyncHttpClientCar.GetByVin(vin);
@@ -67,9 +92,17 @@ namespace MicroServiceApp.ServiceCar.Services
         public async Task<int> Update(PutCarDto item)
         {
             Car car = await asyncHttpClientCar.GetByVin(item.VIN);
-            if (item.SharePercentage == null)
+            if (item.SharePercentage == null || item.SharePercentage == 0)
             {
                 car.ActionCarId = null;
+            }
+            else if (car.ActionCar == null && item.SharePercentage > 0)
+            {
+                await asyncHttpClientActionCar
+                       .Add(new() { SharePercentage = (int)item.SharePercentage });
+                ActionCar actionCar = await asyncHttpClientActionCar
+                    .GetBySharePercentage((int)item.SharePercentage);
+                car.ActionCarId = actionCar.Id;
             }
             else if (car.ActionCar.SharePercentage != item.SharePercentage)
             {

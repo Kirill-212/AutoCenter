@@ -10,11 +10,11 @@ namespace MicroServiceApp.HttpClientLayer
     {
         private protected HttpClient httpClient;
         private protected readonly string URI_REPOSITORY_SERVICE =
-            @"https://localhost:44356/ServiceRepository/api/";
+            @"http://localhost:37766/ServiceRepository/api/";
         private protected readonly string URI_CAR_SERVICE =
-            @"https://localhost:44356/ServiceCar/api/";
+            @"http://localhost:37766/ServiceCar/api/";
         private protected readonly string URI_USER_SERVICE =
-            @"https://localhost:44356/ServiceUser/api/";
+            @"http://localhost:37766/ServiceUser/api/";
 
         public AsyncHttpClientBasicForService(HttpClient httpClient)
         {

@@ -18,6 +18,7 @@ namespace MicroServiceApp.ServiceRepository.Repository
         public async Task<New> GetByTitle(string title)
         {
             return await _context.News.Include(i => i.Imgs)
+                .Include(u=>u.Employee.User)
                 .Where(i => i.Title == title)
                 .FirstOrDefaultAsync();
         }

@@ -15,5 +15,7 @@ namespace MicroServiceApp.ServiceNew.Services
         Task<int> Remove(string title);
 
         Task<int> Update(NewWrapperDto<PutNewDto> item);
+
+        Task<T> GetByTitile(string title);
     }
 }

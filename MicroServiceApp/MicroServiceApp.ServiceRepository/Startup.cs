@@ -27,6 +27,7 @@ namespace MicroServiceApp.ServiceRepository
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      .AddJwtBearer(options =>
                      {
@@ -60,6 +61,9 @@ namespace MicroServiceApp.ServiceRepository
             services.AddTransient<
                 IAsyncRepositoryActionCar<ActionCar>,
                 AsyncRepositoryActionCar>();
+            services.AddTransient<
+               IAsyncRepositoryTestDrive<TestDrive>,
+               AsyncRepositoryTestDrive>();
             services.AddTransient<IAsyncRepositoryRole<Role>, AsyncRepositoryRole>();
             services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
@@ -78,8 +82,12 @@ namespace MicroServiceApp.ServiceRepository
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+          //  app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
+
             app.UseAuthentication();
             app.UseAuthorization();
             var consulOption = new ConsulOption

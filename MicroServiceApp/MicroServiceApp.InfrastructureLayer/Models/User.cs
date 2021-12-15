@@ -36,7 +36,6 @@ namespace MicroServiceApp.InfrastructureLayer.Models
 
         public Role Role { get; set; }
 
-        [JsonIgnore]
         public List<ClientCar> ClientsCars { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace MicroServiceApp.InfrastructureLayer.ConsulSettings
                 Check = new AgentServiceCheck()
                 {
                     DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),
-                    Interval = TimeSpan.FromSeconds(10),
+                    Interval = TimeSpan.FromSeconds(5),
                     HTTP = consulOption.ServiceHealthCheck,
                     Timeout = TimeSpan.FromSeconds(5)
                 }

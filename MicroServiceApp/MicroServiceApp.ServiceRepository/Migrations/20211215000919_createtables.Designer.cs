@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroServiceApp.ServiceRepository.Migrations
 {
     [DbContext(typeof(ContextDb))]
-    [Migration("20211205100251_CreateTables")]
-    partial class CreateTables
+    [Migration("20211215000919_createtables")]
+    partial class createtables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,6 +215,32 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("MicroServiceApp.InfrastructureLayer.Models.TestDrive", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("TestDrives");
+                });
+
             modelBuilder.Entity("MicroServiceApp.InfrastructureLayer.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -332,6 +358,17 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("MicroServiceApp.InfrastructureLayer.Models.TestDrive", b =>
+                {
+                    b.HasOne("MicroServiceApp.InfrastructureLayer.Models.Car", "Car")
+                        .WithMany("TestDrives")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("MicroServiceApp.InfrastructureLayer.Models.User", b =>
                 {
                     b.HasOne("MicroServiceApp.InfrastructureLayer.Models.Role", "Role")
@@ -353,6 +390,8 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                     b.Navigation("ClientCar");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("TestDrives");
                 });
 
             modelBuilder.Entity("MicroServiceApp.InfrastructureLayer.Models.Employee", b =>

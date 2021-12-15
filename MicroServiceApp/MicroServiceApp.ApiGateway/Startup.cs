@@ -1,11 +1,8 @@
-using MicroServiceApp.InfrastructureLayer.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
@@ -24,6 +21,7 @@ namespace MicroServiceApp.ApiGateway
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             services.AddControllers();
             services.AddOcelot(
@@ -40,12 +38,18 @@ namespace MicroServiceApp.ApiGateway
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

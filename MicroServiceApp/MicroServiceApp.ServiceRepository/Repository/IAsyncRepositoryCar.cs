@@ -8,5 +8,13 @@ namespace MicroServiceApp.ServiceRepository.Repository
         Task<T> GetByVin(string vin);
 
         Task UpdateRange(List<T> items);
+
+        Task<IEnumerable<T>> GetWithoutClientCar();
+
+        Task<T> GetByVinNotAddedEmp(string vin);
+
+        Task<IEnumerable<T>> GetCarForUser();
+
+        Task<IEnumerable<T>> GetCarByEmail(string email);
     }
 }

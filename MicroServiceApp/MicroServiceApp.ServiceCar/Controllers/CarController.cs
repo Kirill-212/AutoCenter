@@ -22,6 +22,24 @@ namespace MicroServiceApp.ServiceCar.Controllers
             this.asyncServiceCar = asyncServiceCar;
         }
 
+        [HttpGet("GetCarByEmail")]
+        public async Task<IEnumerable<Car>> GetCarByEmail([FromQuery] string email)
+        {
+            return await asyncServiceCar.GetCarByEmail(email);
+        }
+
+        [HttpGet("GetByVinNotAddedEmp")]
+        public async Task<Car> GetByVinNotAddedEmp([FromQuery]string vin)
+        {
+            return await asyncServiceCar.GetByVinNotAddedEmpValidAttr(vin);
+        }
+
+        [HttpGet("GetCarForUser")]
+        public async Task<IEnumerable<Car>> GetCarForUser()
+        {
+            return await asyncServiceCar.GetCarForUser();
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
@@ -32,6 +50,20 @@ namespace MicroServiceApp.ServiceCar.Controllers
         public async Task<ActionResult<Car>> GetbyId(int id)
         {
             Car return_car = await asyncServiceCar.GetById(id);
+
+            return return_car == null ? BadRequest() : return_car;
+        }
+
+        [HttpGet("GetWithoutClientCar")]
+        public async Task<IEnumerable<Car>> GetWithoutClientCar()
+        {
+            return await asyncServiceCar.GetWithoutClientCar();
+        }
+
+        [HttpGet("GetByVin")]
+        public async Task<ActionResult<Car>> GetByVin([FromQuery] string vin)
+        {
+            Car return_car = await asyncServiceCar.GetByVin(vin);
 
             return return_car == null ? BadRequest() : return_car;
         }

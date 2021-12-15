@@ -1,5 +1,6 @@
 ﻿using MicroServiceApp.ServiceRepository.ContextDB;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,9 +28,9 @@ namespace MicroServiceApp.ServiceRepository.Repository
         }
 
         public async Task Create(T item)
-        {
-            await _dbSet.AddAsync(item);
-            await _context.SaveChangesAsync();
+        {          
+                await _dbSet.AddAsync(item);
+                await _context.SaveChangesAsync();        
         }
 
         public async Task Update(T item)

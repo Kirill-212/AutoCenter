@@ -7,9 +7,10 @@ namespace MicroServiceApp.InfrastructureLayer.CustomValidationAttribute
     {
         public override bool IsValid(object value)
         {
-            if (value != null)
+            if (value != null )
             {
                 int result = Convert.ToInt32(value);
+                if (result == 0) return true;
                 if (result > 0 && result <= 100)
                 {
                     return true;

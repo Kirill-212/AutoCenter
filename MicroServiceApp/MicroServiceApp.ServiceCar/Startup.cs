@@ -28,6 +28,7 @@ namespace MicroServiceApp.ServiceCar
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddSingleton(
                 new ContextDb(
                     Configuration.GetConnectionString("DefaultConnection"),
@@ -71,6 +72,12 @@ namespace MicroServiceApp.ServiceCar
             services.AddTransient<
                 IAsyncServiceClientCar<ClientCar>,
                 AsyncServiceClientCar>();
+            services.AddTransient<
+              IAsyncHttpClientTestDrive<TestDrive>,
+              AsyncHttpClientForCarService<TestDrive>>();
+            services.AddTransient<
+             IAsyncServiceTestDrive<TestDrive>,
+             AsyncServiceTestDrive>();
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -90,8 +97,12 @@ namespace MicroServiceApp.ServiceCar
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+         //   app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

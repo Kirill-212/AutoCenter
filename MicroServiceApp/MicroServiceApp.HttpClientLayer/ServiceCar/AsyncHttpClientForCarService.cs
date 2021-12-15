@@ -13,7 +13,8 @@ namespace MicroServiceApp.HttpClientLayer
         IAsyncHttpClientCarEquipment<T>,
         IAsyncHttpClientActionCar<T>,
         IAsyncHttpClientOrder<T>,
-        IAsyncHttpClientClientCar<T>
+        IAsyncHttpClientClientCar<T>,
+        IAsyncHttpClientTestDrive<T>
     {
         public async Task<T> GetByVin(string vin)
         {
@@ -92,7 +93,7 @@ namespace MicroServiceApp.HttpClientLayer
             var response = await httpClient
                 .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByRegisterNumberValidAttr?registerNumber=" + registerNumber);
 
-            return await response.Content.ReadAsAsync<T>(); ;
+            return await response.Content.ReadAsAsync<T>();
         }
 
         public IAsyncHttpClientCar<T> SetJwt(string jwt = null)
@@ -143,6 +144,76 @@ namespace MicroServiceApp.HttpClientLayer
             }
 
             return this;
+        }
+
+        public async Task<IEnumerable<T>> GetWithoutClientCar()
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetWithoutClientCar");
+
+            return await response.Content.ReadAsAsync<IEnumerable<T>>();
+        }
+
+        IAsyncHttpClientTestDrive<T> IAsyncHttpClientTestDrive<T>.SetJwt(string jwt)
+        {
+            if (jwt != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", jwt);
+            }
+
+            return this;
+        }
+
+        async Task<IEnumerable<T>> IAsyncHttpClientTestDrive<T>.GetByVin(string vin)
+        {
+            var response = await httpClient
+               .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByVin?vin=" + vin);
+
+            return await response.Content.ReadAsAsync<IEnumerable<T>>();
+        }
+
+        public async Task<IEnumerable<T>> GetByVinAttr(string vin)
+        {
+            var response = await httpClient
+               .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByVinAttr?vin=" + vin);
+
+            return await response.Content.ReadAsAsync<IEnumerable<T>>();
+        }
+
+        public async Task<T> GetByAllData(T item)
+        {
+            var response = await httpClient.PostAsync(
+                  URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByAllData",
+                  new StringContent(JsonConvert.SerializeObject(item),
+                  Encoding.UTF8,
+                  "application/json"
+                  ));
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<IEnumerable<T>> GetCarForUser()
+        {
+            var response = await httpClient
+               .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetCarForUser");
+
+            return await response.Content.ReadAsAsync<IEnumerable<T>>();
+        }
+
+        public async Task<T> GetByVinNotAddedEmpValidAttr(string vin)
+        {
+            var response = await httpClient
+               .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetByVinNotAddedEmpValidAttr?vin=" + vin);
+
+            return await response.Content.ReadAsAsync<T>();
+        }
+
+        public async Task<IEnumerable<T>> GetCarByEmail(string email)
+        {
+            var response = await httpClient
+                .GetAsync(URI_REPOSITORY_SERVICE + typeof(T).Name + "/GetCarByEmail?email=" + email);
+
+            return await response.Content.ReadAsAsync<IEnumerable<T>>();
         }
     }
 }

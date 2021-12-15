@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MicroServiceApp.ServiceRepository.Migrations
 {
-    public partial class CreateTables : Migration
+    public partial class createtables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,6 +99,28 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestDrives",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CarId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestDrives", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestDrives_Cars_CarId",
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
@@ -255,6 +277,11 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                 filter: "[RoleName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TestDrives_CarId",
+                table: "TestDrives",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -277,6 +304,9 @@ namespace MicroServiceApp.ServiceRepository.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "TestDrives");
 
             migrationBuilder.DropTable(
                 name: "News");

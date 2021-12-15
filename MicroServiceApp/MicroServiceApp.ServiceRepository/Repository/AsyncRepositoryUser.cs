@@ -21,7 +21,10 @@ namespace MicroServiceApp.ServiceRepository.Repository
                 .Where(r => r.Id != r.Employee.UserId)
                 .ToListAsync();
         }
-
+        public override async Task<IEnumerable<User>> Get()
+        {
+            return await _context.Users.Include(i => i.Role).ToListAsync();
+        }
         public async Task<User> GetByEmail(string email)
         {
             return await _context.Users

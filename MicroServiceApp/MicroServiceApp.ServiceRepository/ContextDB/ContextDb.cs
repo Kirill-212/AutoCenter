@@ -14,6 +14,7 @@ namespace MicroServiceApp.ServiceRepository.ContextDB
         public DbSet<New> News { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ActionCar> ActionsCars { get; set; }
+        public DbSet<TestDrive> TestDrives { get; set; }
 
         public ContextDb(DbContextOptions<ContextDb> options): base(options)
         {

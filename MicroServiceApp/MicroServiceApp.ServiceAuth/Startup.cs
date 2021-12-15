@@ -24,6 +24,7 @@ namespace MicroServiceApp.ServiceAuth
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             services.AddOptions();
             services.AddTransient<
@@ -40,8 +41,12 @@ namespace MicroServiceApp.ServiceAuth
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+         //   app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

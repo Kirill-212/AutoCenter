@@ -48,6 +48,11 @@ namespace MicroServiceApp.ServiceNew.Services
             return await httpClientNew.GetAll();
         }
 
+        public async Task<New> GetByTitile(string title)
+        {
+            return await httpClientNew.GetByTitle(title);
+        }
+
         public async Task<int> Remove(string title)
         {
             New remove_new = await httpClientNew.GetByTitle(title);

@@ -12,5 +12,13 @@ namespace MicroServiceApp.HttpClientLayer.ServiceCar
         Task<int> UpdateRange(List<T> items);
 
         IAsyncHttpClientCar<T> SetJwt(string jwt = null);
+
+        Task<IEnumerable<T>> GetWithoutClientCar();
+
+        Task<IEnumerable<T>> GetCarForUser();
+
+        Task<T> GetByVinNotAddedEmpValidAttr(string vin);
+
+        Task<IEnumerable<T>> GetCarByEmail(string email);
     }
 }

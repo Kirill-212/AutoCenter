@@ -8,5 +8,7 @@ namespace MicroServiceApp.ServiceUser.Services
         Task<IEnumerable<T>> GetAllUsersNotAddedToEmp(string jwt=null);
 
         Task<T> GetByEmail(string email, string jwt = null);
+
+        Task<int> UpdateStatusByEmail(string email, string jwt = null);
     }
 }

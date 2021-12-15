@@ -25,6 +25,7 @@ namespace MicroServiceApp.ServiceNew
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddTransient<
                 IAsyncHttpClientNew<New>,
                 AsyncHttpClientForNewService<New>>();
@@ -55,9 +56,12 @@ namespace MicroServiceApp.ServiceNew
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+          //  app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(
+ options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+ );
 
             app.UseAuthorization();
 

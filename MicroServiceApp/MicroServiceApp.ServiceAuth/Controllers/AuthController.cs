@@ -59,7 +59,8 @@ namespace MicroServiceApp.ServiceAuth.Controllers
                 var responseJson = new
                 {
                     access_token = encodedJwt,
-                    expires_in = (int)TimeSpan.FromMinutes(2).TotalSeconds
+                    email = user.Email,
+                    role=user.Role.RoleName
                 };
 
                 return Json(responseJson);

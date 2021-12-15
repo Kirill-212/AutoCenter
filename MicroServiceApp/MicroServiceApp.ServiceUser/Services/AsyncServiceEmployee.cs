@@ -26,7 +26,7 @@ namespace MicroServiceApp.ServiceUser.Services
 
         public async Task<int> Create(PostEmployeeDto item, string jwt = null)
         {
-            User getUser = await httpClientUser.GetByEmail(item.Email);
+            User getUser = await httpClientUser.SetJwt(jwt).GetByEmail(item.Email);
             Employee empAdd = mapper.Map<Employee>(item);
             empAdd.IsActive = false;
             empAdd.StartWorkDate = DateTime.Now;
@@ -56,8 +56,10 @@ namespace MicroServiceApp.ServiceUser.Services
         public async Task<int> Remove(string email, string jwt = null)
         {
             Employee employee = await httpClientEmployee.SetJwt(jwt).GetByUserEmail(email);
+            User getUser = await httpClientUser.SetJwt(jwt).GetByEmail(email);
+            getUser.RoleId = 2;
 
-            return employee == null ? 404 : await httpClientEmployee.SetJwt(jwt).Remove(employee.Id);
+            return employee == null ? 404 : await httpClientUser.SetJwt(jwt).Update(getUser) == 200 ? await httpClientEmployee.SetJwt(jwt).Remove(employee.Id):404;
         }
 
         public async Task<int> Update(PutEmployeeDto item, string jwt = null)
@@ -68,7 +70,11 @@ namespace MicroServiceApp.ServiceUser.Services
             empPut.Address = item.Address;
 
             if (getUser.RoleId != item.RoleId)
-            {
+            {   if(item.RoleId==2 &&(getUser.RoleId==1|| getUser.RoleId == 3))
+                {
+                    getUser.RoleId = item.RoleId;
+                    return await httpClientUser.SetJwt(jwt).Update(getUser) == 200 ?await Remove(getUser.Email) : 404;
+                }
                 getUser.RoleId = item.RoleId;
                 return await httpClientUser.SetJwt(jwt).Update(getUser) == 200 ?
                      await httpClientEmployee.SetJwt(jwt).Update(empPut) : 404;

@@ -15,5 +15,15 @@ namespace MicroServiceApp.ServiceCar.Services
         Task<int> Update(PutCarDto item);
 
         Task<int> Remove(string vin);
+
+        Task<T> GetByVin(string vin);
+
+        Task<IEnumerable<T>> GetWithoutClientCar();
+
+        Task<IEnumerable<T>> GetCarForUser();
+
+        Task<T> GetByVinNotAddedEmpValidAttr(string vin);
+
+        Task<IEnumerable<T>> GetCarByEmail(string email);
     }
 }

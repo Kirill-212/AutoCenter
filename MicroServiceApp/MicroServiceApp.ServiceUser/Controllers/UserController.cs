@@ -78,8 +78,14 @@ namespace MicroServiceApp.ServiceUser.Controllers
             }
         }
 
+        [HttpPut("UpdateStatus")]
+        public async Task<ActionResult> PutStatus([FromQuery] string email)
+        {
+            return StatusCode(await asyncService.UpdateStatusByEmail(email));
+        }
+
         [HttpDelete]
-        public async Task<ActionResult> Delete([FromQuery]string email)
+        public async Task<ActionResult> Delete([FromQuery] string email)
         {
             return StatusCode(await asyncService.Remove(email));
         }

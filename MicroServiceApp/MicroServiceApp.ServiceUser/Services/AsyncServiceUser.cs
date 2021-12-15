@@ -67,5 +67,17 @@ namespace MicroServiceApp.ServiceUser.Services
 
             return await httpClientUser.SetJwt(jwt).Update(item);
         }
+
+        public async Task<int> UpdateStatusByEmail(string email, string jwt = null)
+        {
+            User user = await httpClientUser.SetJwt(jwt).GetByEmail(email);
+            if (user != null)
+            {
+                if (user.Role.RoleName != "USER") return 404;
+                user.Status = user.Status == Status.ACTIVE ? Status.CREATED : Status.ACTIVE;
+                return await httpClientUser.SetJwt(jwt).Update(user);
+            }
+            return 404;
+        }
     }
 }
