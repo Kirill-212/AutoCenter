@@ -12,6 +12,11 @@ const UserList = () => {
 
   async function GetUsersList() {
     let response = await GetUsers();
+    console.log(response.statusText === "Unauthorized");
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -93,7 +98,7 @@ const UserList = () => {
                 value={obj.email}
                 onClick={UpdateStatusUser}
               >
-                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                <i className="fa fa-user-plus" aria-hidden="true"></i>
               </button>
             )}
 
@@ -123,10 +128,14 @@ const UserList = () => {
 
   return (
     <div className="row mt-5">
-      <h1 className="d-flex justify-content-center align-items-center ">
-        User List
-      </h1>
-      <p>{MessageError}</p>
+      <div className="row">
+        <h1 className="d-flex justify-content-center align-items-center ">
+          User List
+        </h1>
+      </div>
+      <div className="row">
+        <p>{MessageError}</p>
+      </div>
       <div className="row mt-5">
         {viewList && (
           <MDBDataTableV5

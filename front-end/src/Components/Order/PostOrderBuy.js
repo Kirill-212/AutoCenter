@@ -16,6 +16,10 @@ const BuyCar = () => {
 
   async function GetCarEuipment(name, cost, sharePercentage) {
     let response = await GetCarEuipmentByName(name);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -45,6 +49,10 @@ const BuyCar = () => {
     event.preventDefault();
     setMessageError("");
     let response = await PostOrder(user.email, vin, registerNumber);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

@@ -11,6 +11,10 @@ const TestDriveList = () => {
 
   async function GetTestDriveListsList() {
     let response = await GetTestDriveLists();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -35,6 +39,10 @@ const TestDriveList = () => {
   async function UpdateStatus(e) {
     let arr = e.currentTarget.value.split(" ");
     let response = await UpdateStatusTestDrive(arr[2], arr[1], arr[0]);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -64,10 +72,10 @@ const TestDriveList = () => {
               onClick={UpdateStatus}
             >
               {obj.isActive === 1 && (
-                <i class="fa fa-ban" aria-hidden="true"></i>
+                <i className="fa fa-ban" aria-hidden="true"></i>
               )}
               {obj.isActive !== 1 && (
-                <i class="fa fa-car" aria-hidden="true"></i>
+                <i className="fa fa-car" aria-hidden="true"></i>
               )}
             </button>
           </>
@@ -86,10 +94,14 @@ const TestDriveList = () => {
 
   return (
     <div className="row mt-5">
-      <h1 className="d-flex justify-content-center align-items-center ">
-        Test drive List
-      </h1>
-      <p>{MessageError}</p>
+      <div className="row">
+        <h1 className="d-flex justify-content-center align-items-center ">
+          Test drive List
+        </h1>
+      </div>
+      <div className="row">
+        <p>{MessageError}</p>
+      </div>
       <div className="row mt-5">
         {viewList && (
           <MDBDataTableV5

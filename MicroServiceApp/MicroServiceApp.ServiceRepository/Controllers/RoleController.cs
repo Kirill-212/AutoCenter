@@ -17,6 +17,7 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             this.asyncRepositoryUser = asyncRepositoryUser;
         }
 
+
         [HttpGet]
         public async Task<IEnumerable<Role>> GetAllUsersNotAddedToEmp()
         {

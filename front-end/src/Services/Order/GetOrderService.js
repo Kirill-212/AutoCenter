@@ -4,8 +4,8 @@ const URI = "http://localhost:37766/ServiceCar/api/Order";
 async function GetOrder() {
   try {
     const response = await axios.get(
-      URI
-      // { headers: GetJwtToken() },
+      URI,
+       { headers: GetJwtToken() },
     );
     return response;
   } catch (error) {

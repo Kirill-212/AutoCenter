@@ -27,6 +27,10 @@ const PutUser = () => {
       email,
       phoneNumber
     );
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

@@ -18,6 +18,10 @@ const PutEmployee = () => {
     event.preventDefault();
     setMessageError("");
     let response = await PutEmployees(address, email, idRole);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -46,6 +50,10 @@ const PutEmployee = () => {
   async function GetRole() {
     setMessageError("");
     let response = await GetRoles();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -97,7 +105,7 @@ const PutEmployee = () => {
             <h1 className="d-flex   justify-content-center align-items-center ">
               Put Employee
             </h1>
-          </div>{" "}
+          </div>
           <div className="row mt-5">
             <form onSubmit={submitEmployee}>
               <div className="form-group mb-2 ">

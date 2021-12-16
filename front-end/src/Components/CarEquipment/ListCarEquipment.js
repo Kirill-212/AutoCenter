@@ -10,6 +10,10 @@ const CarDetail = () => {
 
   async function GetCarsEuipments() {
     let response = await GetCarEuipment();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -34,14 +38,16 @@ const CarDetail = () => {
         <div className="row border border-dark border-top-1 border-right-1 border-left-1 border-bottom-0">
           <div className="col-md-4">Name car equipment</div>
           <div className="col-md-2">{carEquipment[i].name}</div>
-          <div className="col-md-2">
-            <a
-              className="text-reset"
-              href={`/home/CarEquipment/put?name=` + carEquipment[i].name}
-            >
-              <i className="fa fa-wrench" aria-hidden="true"></i>
-            </a>
-          </div>
+          {user.role !== "USER" && (
+            <div className="col-md-2">
+              <a
+                className="text-reset"
+                href={`/home/CarEquipment/put?name=` + carEquipment[i].name}
+              >
+                <i className="fa fa-wrench" aria-hidden="true"></i>
+              </a>
+            </div>
+          )}
           <div className="col-md-4">
             <img
               src={carEquipment[i].urlImg}
@@ -79,19 +85,18 @@ const CarDetail = () => {
   return (
     <div className=" container ">
       <div className="row">
-        <h1 className="d-flex justify-content-center align-items-center ">
-          Car equipment
-        </h1>
-        <p>{MessageError}</p>
+        <div className="row">
+          <h1 className="d-flex justify-content-center align-items-center ">
+            Car equipment
+          </h1>
+        </div>
+        <div className="row">
+          <p>{MessageError}</p>
+        </div>
       </div>
       <div className="row ">
         {/* {flag && <img src={carEquipment.urlImg} className="w-25 h-25" />} */}
         <div className="row">{flag && ViewCarEquipment()}</div>
-      </div>
-      <div className="row ">
-        <div className="col w-100">
-          <a href={"/home/" + user.role}>Home</a>
-        </div>
       </div>
     </div>
   );

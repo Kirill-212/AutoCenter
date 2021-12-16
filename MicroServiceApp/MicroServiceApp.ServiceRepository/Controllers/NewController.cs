@@ -17,6 +17,7 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             this.asyncRepositoryNew = asyncRepositoryNew;
         }
 
+
         [HttpGet]
         public async Task<IEnumerable<New>> Get()
         {

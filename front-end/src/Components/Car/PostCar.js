@@ -20,6 +20,10 @@ const PostCar = () => {
   async function GetCarEquipment() {
     setMessageError("");
     let response = await GetCarEquipments();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -60,6 +64,10 @@ const PostCar = () => {
       carMileage,
       sharePercentage
     );
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

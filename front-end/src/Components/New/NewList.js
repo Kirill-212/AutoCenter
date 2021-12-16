@@ -11,6 +11,10 @@ const NewList = () => {
 
   async function GetNewsList() {
     let response = await GetNews();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -35,6 +39,10 @@ const NewList = () => {
       return;
     }
     let response = await DeleteNew(title);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -66,6 +74,9 @@ const NewList = () => {
       <h1 className="d-flex justify-content-center align-items-center ">
         New List
       </h1>
+      <div className="row">
+        <p>{MessageError}</p>
+      </div>
       <div className="row mt-5">
         <div className="d-flex justify-content-center align-items-center ">
           <label>Delete news</label>
@@ -85,7 +96,6 @@ const NewList = () => {
           </button>
         </div>
       </div>
-      <p>{MessageError}</p>
       <CarouselPage imgs={listNews} />
     </div>
   );

@@ -28,21 +28,21 @@ namespace MicroServiceApp.ServiceRepository
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                     .AddJwtBearer(options =>
-                     {
-                         options.RequireHttpsMetadata = false;
-                         options.TokenValidationParameters = new TokenValidationParameters
-                         {
-                             ValidateIssuer = true,
-                             ValidIssuer = AuthOptions.ISSUER,
-                             ValidateAudience = true,
-                             ValidAudience = AuthOptions.AUDIENCE,
-                             ValidateLifetime = true,
-                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                             ValidateIssuerSigningKey = true,
-                         };
-                     });
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //         .AddJwtBearer(options =>
+            //         {
+            //             options.RequireHttpsMetadata = false;
+            //             options.TokenValidationParameters = new TokenValidationParameters
+            //             {
+            //                 ValidateIssuer = true,
+            //                 ValidIssuer = AuthOptions.ISSUER,
+            //                 ValidateAudience = true,
+            //                 ValidAudience = AuthOptions.AUDIENCE,
+            //                 ValidateLifetime = true,
+            //                 IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            //                 ValidateIssuerSigningKey = true,
+            //             };
+            //         });
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ContextDb>(options =>
                 options.UseSqlServer(connection));

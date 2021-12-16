@@ -4,21 +4,55 @@ import GetCars from "../../Services/Car/GetCarByEmailService";
 import SetHomeListCarAdminTable from "../../SetTable/SethomeListCarAdminTable";
 import { MDBDataTableV5 } from "mdbreact";
 import DeleteCars from "../../Services/Car/DeleteCarService";
-import DeleteActions from "../../Services/ActionCar/DeleteActionCarService";
-
+import UpdateStatuses from "../../Services/Car/UpdateStatusService";
 const UserCarList = () => {
   const { user } = useContext(Context);
   const [MessageError, setMessageError] = React.useState("");
   const [listCars, setListCars] = React.useState({});
   const [viewList, setViewList] = React.useState(false);
 
+  async function UpdateStatus(e) {
+    let response = await UpdateStatuses(e.currentTarget.value);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
+    if (response === undefined) {
+      setMessageError("Check connect server");
+    } else {
+      if (response.status !== 200) {
+        if (response.data.ERROR !== undefined) {
+          if (response.data.ERROR.details !== undefined) {
+            setMessageError(response.data.ERROR.details[0]["message"]);
+          } else {
+            setMessageError(response.data.ERROR);
+          }
+        } else if (response.data.errors !== undefined) {
+          let errorResult = "";
+          Object.keys(response.data.errors).forEach(function (key) {
+            errorResult += key + " : " + response.data.errors[key] + " | ";
+          });
+          setMessageError(errorResult);
+        } else {
+          setMessageError(response.data);
+        }
+      } else {
+        GetCarsList();
+      }
+    }
+  }
   async function GetCarsList() {
+    console.log("1");
     if (user.email === undefined || user.email === null) {
       setMessageError("Error:go to the login page");
       return;
     }
 
     let response = await GetCars(user.email);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -42,6 +76,10 @@ const UserCarList = () => {
 
   async function DeleteCar(e) {
     let response = await DeleteCars(e.currentTarget.value);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -61,42 +99,62 @@ const UserCarList = () => {
 
   function SetOption(data) {
     return data.map(function (obj) {
-      return {
-        options: (
-          <>
-            <a
-              className="text-reset"
-              href={`/home/Car/DetailsBuy?vin=${obj.vin}`}
-            >
-              <i class="fa fa-info-circle" aria-hidden="true"></i>
-            </a>
-            <a
-              className="text-reset ml-1 mr-2"
-              href={`/home/Car/User/put?vin=${obj.vin}`}
-            >
-              <i className="fa fa-wrench" aria-hidden="true"></i>
-            </a>
-            <button
-              color="purple"
-              size="sm"
-              value={obj.vin}
-              onClick={DeleteCar}
-            >
-              <i className="fa fa-trash" aria-hidden="true "></i>
-            </button>
-          </>
-        ),
-        vin: obj.vin,
-        nameCarEquipment: obj.nameCarEquipment,
-        cost: obj.cost + " $",
-        carMileage: obj.carMileage + " km",
-        dateOfRealeseCar: obj.dateOfRealeseCar,
-        actionCar:
-          obj.actionCar == null || obj.actionCar == undefined
-            ? "not found"
-            : obj.actionCar.sharePercentage + "%",
-        email: obj.clientCar == null ? "For sale" : obj.clientCar.user.email,
-      };
+      console.log("obj.isActive", obj.isActive);
+      if (obj.isActive) return {};
+      if (!obj.isActive)
+        return {
+          options: (
+            <>
+              {!obj.isActive && (
+                <button
+                  color="purple"
+                  size="sm"
+                  className="ml-1"
+                  value={obj.vin}
+                  onClick={UpdateStatus}
+                >
+                  <i className="fa fa-university" aria-hidden="true"></i>
+                </button>
+              )}
+              {obj.isActive && (
+                <a
+                  className="text-reset"
+                  href={`/home/Car/DetailsBuy?vin=${obj.vin}`}
+                >
+                  <i className="fa fa-info-circle" aria-hidden="true"></i>
+                </a>
+              )}
+              {obj.isActive && (
+                <a
+                  className="text-reset ml-1 mr-2"
+                  href={`/home/Car/User/put?vin=${obj.vin}`}
+                >
+                  <i className="fa fa-wrench" aria-hidden="true"></i>
+                </a>
+              )}
+              {obj.isActive && (
+                <button
+                  color="purple"
+                  size="sm"
+                  value={obj.vin}
+                  onClick={DeleteCar}
+                >
+                  <i className="fa fa-trash" aria-hidden="true "></i>
+                </button>
+              )}
+            </>
+          ),
+          vin: obj.vin,
+          nameCarEquipment: obj.nameCarEquipment,
+          cost: obj.cost + " $",
+          carMileage: obj.carMileage + " km",
+          dateOfRealeseCar: obj.dateOfRealeseCar,
+          actionCar:
+            obj.actionCar == null || obj.actionCar == undefined
+              ? "not found"
+              : obj.actionCar.sharePercentage + "%",
+          email: obj.clientCar == null ? "For sale" : obj.clientCar.user.email,
+        };
     });
   }
 
@@ -106,10 +164,14 @@ const UserCarList = () => {
 
   return (
     <div className="row pt-5">
-      <h1 className="d-flex justify-content-center align-items-center ">
-        Car List
-      </h1>
-      <p>{MessageError}</p>
+      <div className="row">
+        <h1 className="d-flex justify-content-center align-items-center ">
+          Car List
+        </h1>
+      </div>
+      <div className="row">
+        <p>{MessageError}</p>
+      </div>
       <div className="row pt-5">
         {viewList && (
           <MDBDataTableV5

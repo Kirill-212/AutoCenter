@@ -21,6 +21,10 @@ const PostCarEquipment = () => {
   async function GetFormCarEquipment() {
     setMessageError("");
     let response = await GetFormCarEquipments();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -51,11 +55,11 @@ const PostCarEquipment = () => {
     let returnButtons = [];
     for (let j in input) {
       returnButtons.push(
-        <div class="form-check">
+        <div className="form-check">
           <label>
             Value:{input[j].value} Cost:{input[j].cost}
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               value={name + " " + input[j].value + " " + input[j].cost}
               name={name}
@@ -105,6 +109,10 @@ const PostCarEquipment = () => {
     arr = arr.replace(",}", "}");
     let url = await PostImgs.uploadImage(img);
     let response = await PostCarsEquipment(name, JSON.parse(arr), url);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

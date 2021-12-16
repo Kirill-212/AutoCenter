@@ -1,6 +1,7 @@
 ﻿using MicroServiceApp.InfrastructureLayer.Dto;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceCar.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,13 +18,13 @@ namespace MicroServiceApp.ServiceCar.Controllers
         {
             this.asyncServiceTestDrive = asyncServiceTestDrive;
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpGet]
         public async Task<IEnumerable<TestDrive>> GetAll()
         {
             return await asyncServiceTestDrive.GetAll();
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PostTestDriveDto item)
         {
@@ -36,7 +37,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
                 return BadRequest(ModelState);
             }
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] PutTestDriveDto item)
         {

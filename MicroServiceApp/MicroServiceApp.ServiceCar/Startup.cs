@@ -1,17 +1,20 @@
 using AutoMapper;
 using MicroServiceApp.HttpClientLayer;
 using MicroServiceApp.HttpClientLayer.ServiceCar;
+using MicroServiceApp.InfrastructureLayer.Auth;
 using MicroServiceApp.InfrastructureLayer.AutoMapper;
 using MicroServiceApp.InfrastructureLayer.ConsulSettings;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceCar.ContextDB;
 using MicroServiceApp.ServiceCar.Repository;
 using MicroServiceApp.ServiceCar.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
@@ -28,7 +31,21 @@ namespace MicroServiceApp.ServiceCar
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(); services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = AuthOptions.ISSUER,
+                            ValidateAudience = true,
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            ValidateLifetime = true,
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
             services.AddSingleton(
                 new ContextDb(
                     Configuration.GetConnectionString("DefaultConnection"),
@@ -100,9 +117,11 @@ namespace MicroServiceApp.ServiceCar
          //   app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(
- options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
- );
+             options => options.WithOrigins("*")
+             .AllowAnyMethod().AllowAnyHeader()
+             );
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

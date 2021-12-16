@@ -11,6 +11,10 @@ const EmployeeList = () => {
 
   async function GetEmployeesList() {
     let response = await GetEmployees();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -34,6 +38,10 @@ const EmployeeList = () => {
 
   async function DeleteEmployee(e) {
     let response = await DeleteEmployees(e.currentTarget.value);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -85,10 +93,14 @@ const EmployeeList = () => {
 
   return (
     <div className="row mt-5">
-      <h1 className="d-flex justify-content-center align-items-center ">
-        Employee List
-      </h1>
-      <p>{MessageError}</p>
+      <div className="row">
+        <h1 className="d-flex justify-content-center align-items-center ">
+          Employee List
+        </h1>
+      </div>
+      <div className="row">
+        <p>{MessageError}</p>
+      </div>
       <div className="row mt-5">
         {viewList && (
           <MDBDataTableV5

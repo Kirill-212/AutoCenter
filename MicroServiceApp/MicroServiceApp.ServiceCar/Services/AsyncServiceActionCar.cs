@@ -20,14 +20,14 @@ namespace MicroServiceApp.ServiceCar.Services
             this.asyncHttpClientActionCar = asyncHttpClientActionCar;
             this.asyncHttpClientCar = asyncHttpClientCar;
         }
-        public async Task<int> DeleteAll()
+        public async Task<int> DeleteAll(string jwt = null)
         {
-            await asyncHttpClientCar.UpdateRange((await asyncHttpClientCar.GetAll())
+            await asyncHttpClientCar.SetJwt(jwt).UpdateRange((await asyncHttpClientCar.SetJwt(jwt).GetAll())
                 .Where(i => i.ActionCarId != null)
                 .Select(i => { i.ActionCarId = null; return i; })
                 .ToList());
-            List<ActionCar> actionCars = (await asyncHttpClientActionCar.GetAll()).ToList();
-            return await asyncHttpClientActionCar.DeleteAll(actionCars);
+            List<ActionCar> actionCars = (await asyncHttpClientActionCar.SetJwt(jwt).GetAll()).ToList();
+            return await asyncHttpClientActionCar.SetJwt(jwt).DeleteAll(actionCars);
         }
     }
 }

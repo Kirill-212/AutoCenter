@@ -13,7 +13,7 @@ async function PutUser(
   try {
     const response = await axios.put(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         FirstName: firstName,
         LastName: lastName,
@@ -22,7 +22,8 @@ async function PutUser(
         Password: password,
         Email: email,
         PhoneNumber: phoneNumber,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

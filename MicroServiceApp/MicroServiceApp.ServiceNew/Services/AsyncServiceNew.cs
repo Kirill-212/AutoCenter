@@ -29,41 +29,41 @@ namespace MicroServiceApp.ServiceNew.Services
             this.httpClientNew = httpClientNew;
         }
 
-        public async Task<int> Create(NewWrapperDto<PostNewDto> item)
+        public async Task<int> Create(NewWrapperDto<PostNewDto> item, string jwt = null)
         {
             New postNew = mapper.Map<New>(item.New);
-            postNew.EmployeeId = (await asyncHttpClientUser.GetUserByEmail(item.New.Email)).Id;
+            postNew.EmployeeId = (await asyncHttpClientUser.SetJwt(jwt).GetUserByEmail(item.New.Email)).Id;
             postNew.Imgs = mapper.Map<List<Img>>(item.Imgs);
 
-            return await httpClientNew.Add(postNew);
+            return await httpClientNew.SetJwt(jwt).Add(postNew);
         }
 
-        public async Task<New> FindById(int id)
+        public async Task<New> FindById(int id, string jwt = null)
         {
-            return await httpClientNew.GetById(id);
+            return await httpClientNew.SetJwt(jwt).GetById(id);
         }
 
-        public async Task<IEnumerable<New>> GetAll()
+        public async Task<IEnumerable<New>> GetAll( string jwt = null)
         {
-            return await httpClientNew.GetAll();
+            return await httpClientNew.SetJwt(jwt).GetAll();
         }
 
-        public async Task<New> GetByTitile(string title)
+        public async Task<New> GetByTitile(string title, string jwt = null)
         {
-            return await httpClientNew.GetByTitle(title);
+            return await httpClientNew.SetJwt(jwt).GetByTitle(title);
         }
 
-        public async Task<int> Remove(string title)
+        public async Task<int> Remove(string title, string jwt = null)
         {
-            New remove_new = await httpClientNew.GetByTitle(title);
+            New remove_new = await httpClientNew.SetJwt(jwt).GetByTitle(title);
 
-            return remove_new==null?404: await httpClientNew.Remove(remove_new.Id);
+            return remove_new==null?404: await httpClientNew.SetJwt(jwt).Remove(remove_new.Id);
         }
 
-        public async Task<int> Update(NewWrapperDto<PutNewDto> item)
+        public async Task<int> Update(NewWrapperDto<PutNewDto> item, string jwt = null)
         {
             int result_op=0;
-            New _new = await httpClientNew.GetByTitle(item.New.Title);
+            New _new = await httpClientNew.SetJwt(jwt).GetByTitle(item.New.Title);
             var urlImgsForm = mapper.Map<List<Img>>(item.Imgs).Select(i => i.Url);
             var urlImgsDb = _new.Imgs.Select(i => i.Url);
             List<Img> removeImgs = _new.Imgs
@@ -76,15 +76,15 @@ namespace MicroServiceApp.ServiceNew.Services
                 .ToList();
             if (addImgs.Count != 0)
             {
-              result_op=  await httpClientImg.AddRange(addImgs);
+              result_op=  await httpClientImg.SetJwt(jwt).AddRange(addImgs);
             }
             if (removeImgs.Count != 0 && result_op==200)
             {
-                result_op= await httpClientImg.RemoveRange(removeImgs);
+                result_op= await httpClientImg.SetJwt(jwt).RemoveRange(removeImgs);
             }
             _new.Description = item.New.Description;
 
-            return result_op==200? await httpClientNew.Update(_new): result_op;
+            return result_op==200? await httpClientNew.SetJwt(jwt).Update(_new): result_op;
         }
     }
 }

@@ -14,7 +14,7 @@ async function PostCLientCar(
   try {
     const response = await axios.post(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         PostCarDto: {
           NameCarEquipment: nameCarEquipment,
@@ -26,7 +26,8 @@ async function PostCLientCar(
         },
         Email: email,
         RegisterNumber: registerNumber,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

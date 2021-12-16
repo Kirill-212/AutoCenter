@@ -12,6 +12,10 @@ const CarDetail = () => {
 
   async function GetCarByVin(vin) {
     let response = await GetDetails(vin);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -30,6 +34,10 @@ const CarDetail = () => {
 
   async function GetCarEuipment(name) {
     let response = await GetCarEuipmentByName(name);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -103,7 +111,12 @@ const CarDetail = () => {
         <div className="row d-flex   justify-content-center align-items-center">
           <div className="col-md-3">
             <div className="col-md-6 justify-content-center"></div>
-            <h1>Car details</h1> <p>{MessageError}</p>
+            <div className="row">
+              <h1>Car details</h1>
+            </div>
+            <div className="row">
+              <p>{MessageError}</p>
+            </div>
           </div>
           <div className="col-md-3"></div>
         </div>

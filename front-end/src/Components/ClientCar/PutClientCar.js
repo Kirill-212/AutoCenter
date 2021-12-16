@@ -24,6 +24,10 @@ const PutClientCar = () => {
       oldRegisterNumber,
       newRegisterNumber
     );
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -52,6 +56,10 @@ const PutClientCar = () => {
   async function GetUser(emailUser) {
     setMessageError("");
     let response = await GetUsers();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

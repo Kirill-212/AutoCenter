@@ -6,10 +6,10 @@ namespace MicroServiceApp.ServiceCar.Services
 {
     public interface IAsyncServiceTestDrive<T>
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll( string jwt = null);
 
-        Task<int> Create(PostTestDriveDto item);
+        Task<int> Create(PostTestDriveDto item, string jwt = null);
 
-        Task<int> Put(PutTestDriveDto item);
+        Task<int> Put(PutTestDriveDto item, string jwt = null);
     }
 }

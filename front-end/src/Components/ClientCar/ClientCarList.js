@@ -11,6 +11,10 @@ const ClientCarList = () => {
 
   async function GetClientCarsList() {
     let response = await GetClientCars();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -34,6 +38,10 @@ const ClientCarList = () => {
 
   async function DeleteClientCar(e) {
     let response = await DeleteClientCars(e.currentTarget.value);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -60,13 +68,13 @@ const ClientCarList = () => {
               className="text-reset"
               href={`/home/car/details?vin=${obj.car.vin}`}
             >
-              <i class="fa fa-info-circle" aria-hidden="true"></i>
+              <i className="fa fa-info-circle" aria-hidden="true"></i>
             </a>
             <a
               className="text-reset ml-1 mr-1"
               href={`/home/ClientCar/put?registerNumber=${obj.registerNumber}&email=${obj.user.email}`}
             >
-              <i class="fa fa-money" aria-hidden="true"></i>
+              <i className="fa fa-money" aria-hidden="true"></i>
             </a>
             <button
               color="purple"
@@ -103,7 +111,9 @@ const ClientCarList = () => {
         <h1 className="d-flex justify-content-center align-items-center ">
           Client car List
         </h1>
-        <p>{MessageError}</p>
+        <div className="row">
+          <p>{MessageError}</p>
+        </div>
       </div>
       <div className="row mt-5">
         {viewList && (

@@ -5,12 +5,13 @@ async function PostTestDrive(vin, time, date) {
   try {
     const response = await axios.post(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         vin: vin,
         Time: time,
         Date: date,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

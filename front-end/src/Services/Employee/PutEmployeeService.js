@@ -5,12 +5,13 @@ async function PutEmployee(address, email, roleId) {
   try {
     const response = await axios.put(
       URI,
-      //   { headers: GetJwtToken() },
+
       {
         Address: address,
         Email: email,
         RoleId: roleId,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

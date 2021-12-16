@@ -1,6 +1,7 @@
 ﻿using MicroServiceApp.InfrastructureLayer.Dto;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceCar.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             this.asyncServiceClientCar = asyncServiceClientCar;
         }
 
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PostClientCarDto item)
         {
@@ -31,6 +33,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] PutClientCarDto item)
         {
@@ -44,12 +47,14 @@ namespace MicroServiceApp.ServiceCar.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpGet]
         public async Task<IEnumerable<ClientCar>> GetAll()
         {
-            return await asyncServiceClientCar.GetAll();
+            return await asyncServiceClientCar.GetAll( );
         }
 
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ClientCar>> GetbyId(int id)
         {
@@ -62,6 +67,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             return return_clientCar;
         }
 
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpDelete]
         public async Task<ActionResult> DeleteByRegisterNumber([FromQuery] string registerNumber)
         {

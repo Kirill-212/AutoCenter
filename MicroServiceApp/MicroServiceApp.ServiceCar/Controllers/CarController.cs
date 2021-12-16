@@ -2,6 +2,7 @@
 using MicroServiceApp.InfrastructureLayer.Dto;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceCar.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,30 +23,42 @@ namespace MicroServiceApp.ServiceCar.Controllers
             this.asyncServiceCar = asyncServiceCar;
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
+        [HttpGet("UpdateStatus")]
+        public async Task<ActionResult> UpdateStatus([FromQuery] string vin)
+        {
+            return StatusCode(await asyncServiceCar.UpdateStatus(vin));
+        }
+
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("GetCarByEmail")]
         public async Task<IEnumerable<Car>> GetCarByEmail([FromQuery] string email)
         {
             return await asyncServiceCar.GetCarByEmail(email);
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("GetByVinNotAddedEmp")]
         public async Task<Car> GetByVinNotAddedEmp([FromQuery]string vin)
         {
             return await asyncServiceCar.GetByVinNotAddedEmpValidAttr(vin);
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("GetCarForUser")]
         public async Task<IEnumerable<Car>> GetCarForUser()
         {
-            return await asyncServiceCar.GetCarForUser();
+            return await asyncServiceCar.GetCarForUser( );
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
-            return await asyncServiceCar.GetAll();
+            return await asyncServiceCar.GetAll( );
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetbyId(int id)
         {
@@ -54,12 +67,14 @@ namespace MicroServiceApp.ServiceCar.Controllers
             return return_car == null ? BadRequest() : return_car;
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("GetWithoutClientCar")]
         public async Task<IEnumerable<Car>> GetWithoutClientCar()
         {
-            return await asyncServiceCar.GetWithoutClientCar();
+            return await asyncServiceCar.GetWithoutClientCar( );
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet("GetByVin")]
         public async Task<ActionResult<Car>> GetByVin([FromQuery] string vin)
         {
@@ -68,6 +83,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             return return_car == null ? BadRequest() : return_car;
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PostCarDto item)
         {
@@ -81,6 +97,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             }
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] PutCarDto item)
         {
@@ -94,6 +111,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
             }
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpDelete("DeleteByVin")]
         public async Task<ActionResult> Delete([FromQuery] string vin)
         {

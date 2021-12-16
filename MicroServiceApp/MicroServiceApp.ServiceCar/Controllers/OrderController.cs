@@ -1,6 +1,7 @@
 ﻿using MicroServiceApp.InfrastructureLayer.Dto;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceCar.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
         {
             this.asyncServiceOrder = asyncServiceOrder;
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PostOrderDto item)
         {
@@ -30,7 +31,7 @@ namespace MicroServiceApp.ServiceCar.Controllers
                 return BadRequest(ModelState);
             }
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetbyId(int id)
         {
@@ -42,11 +43,11 @@ namespace MicroServiceApp.ServiceCar.Controllers
 
             return return_order;
         }
-
+        [Authorize(Roles = "ADMIN, EMPLOYEE, USER")]
         [HttpGet]
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await asyncServiceOrder.GetAll();
+            return await asyncServiceOrder.GetAll( );
         }
     }
 }

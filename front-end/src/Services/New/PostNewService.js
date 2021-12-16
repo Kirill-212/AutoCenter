@@ -5,12 +5,12 @@ async function PostNew(title, description, email, arrImg) {
   try {
     const response = await axios.post(
       URI,
-      // {
-      //   headers: GetJwtToken(),
-      // },
       {
         New: { Title: title, Description: description, Email: email },
         Imgs: arrImg,
+      },
+      {
+        headers: GetJwtToken(),
       }
     );
     return response;

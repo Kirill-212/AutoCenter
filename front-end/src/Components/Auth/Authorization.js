@@ -33,11 +33,19 @@ const Authorization = () => {
         }
       } else {
         localStorage.setItem("user", JSON.stringify(response.data));
+        // console.log(localStorage.getItem("user"));
+        setMessageError("completed successfully");
         if (response.data["role"] === "ADMIN") {
           setredirectAdmin(true);
+          setredirectEmployee(false);
+          setredirectUser(false);
         } else if (response.data["role"] === "EMPLOYEE") {
+          setredirectAdmin(false);
           setredirectEmployee(true);
+          setredirectUser(false);
         } else {
+          setredirectAdmin(false);
+          setredirectEmployee(false);
           setredirectUser(true);
         }
       }
@@ -104,12 +112,26 @@ const Authorization = () => {
               </div>
             </div>
           </form>
-          <a href="/">Registration</a>
-          <div>
+          <div className="row">
+            {redirectAdmin && (
+              <a href="/home/ADMIN" value="Admin">
+                Admin
+              </a>
+            )}
+            {redirectEmployee && <a href="/home/EMPLOYEE">Employee</a>}
+            {redirectUser && (
+              <a href="/home/USER" value="User">
+                User
+              </a>
+            )}
+          </div>
+          <div className="row">
+            <a href="/" value="User">
+              Reguster
+            </a>
+          </div>
+          <div className="row">
             <p>{MessageError}</p>
-            {redirectAdmin && <Navigate to="/home/ADMIN" />}
-            {redirectEmployee && <Navigate to="/home/EMPLOYEE" />}
-            {redirectUser && <Navigate to="/home/USER" />}
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ async function PostCar(
   try {
     const response = await axios.post(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         NameCarEquipment: nameCarEquipment,
         Cost: cost,
@@ -20,7 +20,8 @@ async function PostCar(
         DateOfRealeseCar: dateOfRealeseCar,
         CarMileage: carMileage,
         SharePercentage: sharePercentage,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

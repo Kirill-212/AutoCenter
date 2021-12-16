@@ -23,18 +23,18 @@ namespace MicroServiceApp.ServiceCar.Services
             this.asyncHttpClientActionCar = asyncHttpClientActionCar;
             this.asyncHttpClientCar = asyncHttpClientCar;
         }
-        public async Task<int> Create(PostCarDto item)
+        public async Task<int> Create(PostCarDto item, string jwt = null)
         {
             Car car = mapper.Map<Car>(item);
             if (item.SharePercentage != null)
             {
-                ActionCar actionCar = await asyncHttpClientActionCar
+                ActionCar actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                     .GetBySharePercentage((int)item.SharePercentage);
                 if (actionCar == null)
                 {
                     actionCar = new() { SharePercentage = (int)item.SharePercentage };
-                    await asyncHttpClientActionCar.Add(actionCar);
-                    actionCar = await asyncHttpClientActionCar
+                    await asyncHttpClientActionCar.SetJwt(jwt).Add(actionCar);
+                    actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                         .GetBySharePercentage((int)item.SharePercentage);
                     car.ActionCarId = actionCar.Id;
                 }
@@ -43,74 +43,74 @@ namespace MicroServiceApp.ServiceCar.Services
                     car.ActionCarId = actionCar.Id;
                 }
             }
-
-            return await asyncHttpClientCar.Add(car);
+            car.IsActive = false;
+            return await asyncHttpClientCar.SetJwt(jwt).Add(car);
         }
 
-        public async Task<IEnumerable<Car>> GetAll()
+        public async Task<IEnumerable<Car>> GetAll( string jwt = null)
         {
-            return await asyncHttpClientCar.GetAll();
+            return await asyncHttpClientCar.SetJwt(jwt).GetAll();
         }
 
-        public async Task<Car> GetById(int id)
+        public async Task<Car> GetById(int id, string jwt = null)
         {
-            return await asyncHttpClientCar.GetById(id);
+            return await asyncHttpClientCar.SetJwt(jwt).GetById(id);
         }
 
-        public async Task<Car> GetByVin(string vin)
+        public async Task<Car> GetByVin(string vin, string jwt = null)
         {
-            return await asyncHttpClientCar.GetByVin(vin);
+            return await asyncHttpClientCar.SetJwt(jwt).GetByVin(vin);
         }
 
-        public async Task<Car> GetByVinNotAddedEmpValidAttr(string vin)
+        public async Task<Car> GetByVinNotAddedEmpValidAttr(string vin, string jwt = null)
         {
-            return await asyncHttpClientCar.GetByVinNotAddedEmpValidAttr(vin);
+            return await asyncHttpClientCar.SetJwt(jwt).GetByVinNotAddedEmpValidAttr(vin);
         }
 
-        public async Task<IEnumerable<Car>> GetCarByEmail(string email)
+        public async Task<IEnumerable<Car>> GetCarByEmail(string email, string jwt = null)
         {
-            return await asyncHttpClientCar.GetCarByEmail(email);
+            return await asyncHttpClientCar.SetJwt(jwt).GetCarByEmail(email);
         }
 
-        public async Task<IEnumerable<Car>> GetCarForUser()
+        public async Task<IEnumerable<Car>> GetCarForUser( string jwt = null)
         {
-            return await asyncHttpClientCar.GetCarForUser();
+            return await asyncHttpClientCar.SetJwt(jwt).GetCarForUser();
         }
 
-        public async Task<IEnumerable<Car>> GetWithoutClientCar()
+        public async Task<IEnumerable<Car>> GetWithoutClientCar( string jwt = null)
         {
-            return await asyncHttpClientCar.GetWithoutClientCar();
+            return await asyncHttpClientCar.SetJwt(jwt).GetWithoutClientCar();
         }
 
-        public async Task<int> Remove(string vin)
+        public async Task<int> Remove(string vin, string jwt = null)
         {
-            Car car = await asyncHttpClientCar.GetByVin(vin);
+            Car car = await asyncHttpClientCar.SetJwt(jwt).GetByVin(vin);
 
-            return car == null ? 404 : await asyncHttpClientCar.Remove(car.Id);
+            return car == null ? 404 : await asyncHttpClientCar.SetJwt(jwt).Remove(car.Id);
         }
 
-        public async Task<int> Update(PutCarDto item)
+        public async Task<int> Update(PutCarDto item, string jwt = null)
         {
-            Car car = await asyncHttpClientCar.GetByVin(item.VIN);
+            Car car = await asyncHttpClientCar.SetJwt(jwt).GetByVin(item.VIN);
             if (item.SharePercentage == null || item.SharePercentage == 0)
             {
                 car.ActionCarId = null;
             }
             else if (car.ActionCar == null && item.SharePercentage > 0)
             {
-                await asyncHttpClientActionCar
+                await asyncHttpClientActionCar.SetJwt(jwt)
                        .Add(new() { SharePercentage = (int)item.SharePercentage });
-                ActionCar actionCar = await asyncHttpClientActionCar
+                ActionCar actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                     .GetBySharePercentage((int)item.SharePercentage);
                 car.ActionCarId = actionCar.Id;
             }
             else if (car.ActionCar.SharePercentage != item.SharePercentage)
             {
-                ActionCar actionCar = await asyncHttpClientActionCar
+                ActionCar actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                     .GetBySharePercentage((int)item.SharePercentage);
                 if (actionCar == null)
                 {
-                    await asyncHttpClientActionCar
+                    await asyncHttpClientActionCar.SetJwt(jwt)
                         .Add(new() { SharePercentage = (int)item.SharePercentage });
                     car.ActionCarId = actionCar.Id;
                 }
@@ -123,7 +123,15 @@ namespace MicroServiceApp.ServiceCar.Services
             putCar.Id = car.Id;
             putCar.ActionCarId = car.ActionCarId;
 
-            return await asyncHttpClientCar.Update(putCar);
+            return await asyncHttpClientCar.SetJwt(jwt).Update(putCar);
+        }
+
+        public async Task<int> UpdateStatus(string vin, string jwt = null)
+        {
+            Car car=await asyncHttpClientCar.SetJwt(jwt).GetByVin(vin);
+            if (car == null) return 404;
+            car.IsActive = !car.IsActive;
+            return await asyncHttpClientCar.SetJwt(jwt).Update(car);
         }
     }
 }

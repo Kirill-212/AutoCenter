@@ -6,14 +6,14 @@ namespace MicroServiceApp.ServiceCar.Services
 {
     public interface IAsyncServiceClientCar<T>
     {
-        Task<int> Create(PostClientCarDto item);
+        Task<int> Create(PostClientCarDto item, string jwt = null);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll( string jwt = null);
 
-        Task<T> GetById(int id);
+        Task<T> GetById(int id, string jwt = null);
 
-        Task<int> Update(PutClientCarDto item);
+        Task<int> Update(PutClientCarDto item, string jwt = null);
 
-        Task<int> Remove(string registerNumber);
+        Task<int> Remove(string registerNumber, string jwt = null);
     }
 }

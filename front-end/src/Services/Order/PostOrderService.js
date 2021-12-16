@@ -5,12 +5,13 @@ async function PosrOrder(email, vin, registerNumber) {
   try {
     const response = await axios.post(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         VIN: vin,
         Email: email,
         RegisterNumber: registerNumber,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

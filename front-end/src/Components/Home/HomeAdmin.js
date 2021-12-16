@@ -9,6 +9,7 @@ import TestDriveList from "../TestDrive/ListTestDrive";
 import CarEquipmentList from "../CarEquipment/ListCarEquipment";
 import UserRoleList from "../Car/UserCar";
 import BuyCarList from "../Car/BuyCarList";
+import NewListUser from "../New/NewListUser";
 const HomeAdmin = () => {
   const [checkUserList, setCheckUserList] = useState(true);
   const [checkEmployeeList, setCheckEmployeeList] = useState(false);
@@ -20,6 +21,7 @@ const HomeAdmin = () => {
   const [checkCarEquipment, setCheckCarEquipment] = useState(false);
   const [checkUserRoleList, setCheckUserRoleList] = useState(false);
   const [checkBuyCarList, setCheckBuyCarList] = useState(false);
+  const [checkNewUserList, setChekNewUserList] = useState(false);
   function UserPage() {
     setCheckUserList(true);
     setCheckEmployeeList(false);
@@ -31,6 +33,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function EmployeePage() {
     setCheckUserList(false);
@@ -43,6 +46,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
 
   function CarPage() {
@@ -56,6 +60,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function ClientCarPage() {
     setCheckUserList(false);
@@ -68,6 +73,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function NewPage() {
     setCheckUserList(false);
@@ -80,6 +86,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function OrderPage() {
     setCheckUserList(false);
@@ -92,6 +99,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function TestDrivePage() {
     setCheckUserList(false);
@@ -104,6 +112,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function CarEquipmentPage() {
     setCheckUserList(false);
@@ -116,6 +125,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(true);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function UserRolePage() {
     setCheckUserList(false);
@@ -128,6 +138,7 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(true);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }
   function BuyCarPage() {
     setCheckUserList(false);
@@ -140,6 +151,20 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(true);
+    setChekNewUserList(false);
+  }
+  function NewListUserPage() {
+    setCheckUserList(false);
+    setCheckEmployeeList(false);
+    setCheckCarList(false);
+    setClientCarList(false);
+    setCheckNewList(false);
+    setCheckOrderList(false);
+    setCheckTestDriveList(false);
+    setCheckCarEquipment(false);
+    setCheckUserRoleList(false);
+    setCheckBuyCarList(false);
+    setChekNewUserList(true);
   }
   useEffect(() => {
     setCheckUserList(true);
@@ -152,18 +177,19 @@ const HomeAdmin = () => {
     setCheckCarEquipment(false);
     setCheckUserRoleList(false);
     setCheckBuyCarList(false);
+    setChekNewUserList(false);
   }, []);
 
   return (
     <div className="d-flex   justify-content-center align-items-center flex-column ">
       <div className="row bg-dark text-white w-100">
         <div
-          class="btn-group btn-group-sm"
+          className="btn-group btn-group-sm"
           role="group"
           aria-label="Basic example"
         >
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -176,7 +202,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -189,7 +215,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -202,7 +228,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -215,7 +241,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -228,7 +254,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -241,7 +267,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -254,7 +280,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -267,7 +293,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -280,7 +306,7 @@ const HomeAdmin = () => {
             </button>
           </div>
           <div
-            class="btn-group btn-group-sm"
+            className="btn-group btn-group-sm"
             role="group"
             aria-label="Basic example"
           >
@@ -290,6 +316,19 @@ const HomeAdmin = () => {
               onClick={BuyCarPage}
             >
               Buy
+            </button>
+          </div>{" "}
+          <div
+            className="btn-group btn-group-sm"
+            role="group"
+            aria-label="Basic example"
+          >
+            <button
+              type="button"
+              className="btn btn-secondary btn-rounded"
+              onClick={NewListUserPage}
+            >
+              New
             </button>
           </div>
         </div>
@@ -343,6 +382,7 @@ const HomeAdmin = () => {
           {checkCarEquipment && <CarEquipmentList />}
           {checkUserRoleList && <UserRoleList />}
           {checkBuyCarList && <BuyCarList />}
+          {checkNewUserList && <NewListUser />}
         </div>
       </div>
     </div>

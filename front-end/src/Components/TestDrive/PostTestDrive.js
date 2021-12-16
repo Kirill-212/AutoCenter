@@ -17,6 +17,10 @@ const PostTestDrive = () => {
 
   async function GetCarEuipment(name) {
     let response = await GetCarEuipmentByName(name);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -35,6 +39,10 @@ const PostTestDrive = () => {
   async function GetVin() {
     setMessageError("");
     let response = await GetVins();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -78,6 +86,10 @@ const PostTestDrive = () => {
     event.preventDefault();
     setMessageError("");
     let response = await PostTestDrives(vin, time, date);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

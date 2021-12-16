@@ -6,10 +6,10 @@ namespace MicroServiceApp.ServiceCar.Services
 {
     public interface IAsyncServiceOrder<T>
     {
-        Task<int> Create(PostOrderDto item);
+        Task<int> Create(PostOrderDto item, string jwt = null);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll( string jwt = null);
 
-        Task<T> GetById(int id);
+        Task<T> GetById(int id, string jwt = null);
     }
 }

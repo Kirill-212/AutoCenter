@@ -22,6 +22,10 @@ const PutCar = () => {
 
   async function GetCarByVin(vin) {
     let response = await GetDetails(vin);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -69,6 +73,10 @@ const PutCar = () => {
       carMileage,
       shp
     );
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

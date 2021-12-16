@@ -6,24 +6,26 @@ namespace MicroServiceApp.ServiceCar.Services
 {
     public interface IAsyncServiceCar<T>
     {
-        Task<int> Create(PostCarDto item);
+        Task<int> Create(PostCarDto item, string jwt = null);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll( string jwt = null);
 
-        Task<T> GetById(int id);
+        Task<T> GetById(int id, string jwt = null);
 
-        Task<int> Update(PutCarDto item);
+        Task<int> Update(PutCarDto item, string jwt = null);
 
-        Task<int> Remove(string vin);
+        Task<int> Remove(string vin, string jwt = null);
 
-        Task<T> GetByVin(string vin);
+        Task<T> GetByVin(string vin, string jwt = null);
 
-        Task<IEnumerable<T>> GetWithoutClientCar();
+        Task<IEnumerable<T>> GetWithoutClientCar( string jwt = null);
 
-        Task<IEnumerable<T>> GetCarForUser();
+        Task<IEnumerable<T>> GetCarForUser( string jwt = null);
 
-        Task<T> GetByVinNotAddedEmpValidAttr(string vin);
+        Task<T> GetByVinNotAddedEmpValidAttr(string vin, string jwt = null);
 
-        Task<IEnumerable<T>> GetCarByEmail(string email);
+        Task<IEnumerable<T>> GetCarByEmail(string email, string jwt = null);
+
+        Task<int> UpdateStatus(string vin, string jwt = null);
     }
 }

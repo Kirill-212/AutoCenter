@@ -19,6 +19,10 @@ const PostEmployee = () => {
   async function GetRole() {
     setMessageError("");
     let response = await GetRoles();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -48,6 +52,10 @@ const PostEmployee = () => {
   async function GetEmails() {
     setMessageError("");
     let response = await GetUsers();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -77,6 +85,10 @@ const PostEmployee = () => {
     event.preventDefault();
     setMessageError("");
     let response = await PostEmployees(address, email, idRole);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -124,7 +136,7 @@ const PostEmployee = () => {
             <h1 className="d-flex   justify-content-center align-items-center">
               Post Employee
             </h1>
-          </div>{" "}
+          </div>
           <div className="row mt-5">
             <form onSubmit={submitEmployee}>
               <div className="form-group mb-2 ">

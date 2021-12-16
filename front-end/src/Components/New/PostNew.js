@@ -28,6 +28,10 @@ const PostNew = () => {
     }
     setMessageError("");
     let response = await PostNews(title, description, user.email, urls);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

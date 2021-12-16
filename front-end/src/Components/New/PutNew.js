@@ -20,6 +20,10 @@ const PutNew = () => {
   async function GetNews(title) {
     setMessageError("");
     let response = await GetByTitles(title);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -71,6 +75,10 @@ const PutNew = () => {
     }
     setMessageError("");
     let response = await PutNews(title, description, email, urls);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

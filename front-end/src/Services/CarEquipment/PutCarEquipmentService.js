@@ -5,12 +5,13 @@ async function PutCarEquipment(name, arr, url) {
   try {
     const response = await axios.put(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         name: name,
         equipment: arr,
         urlImg: url,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

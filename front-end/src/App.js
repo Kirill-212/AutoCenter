@@ -31,8 +31,11 @@ import CarUserDetail from "./Components/Car/DetailsBuyCar"; //all
 import BuyCar from "./Components/Order/PostOrderBuy"; //all
 import UserCarList from "./Components/Car/UserCar"; //all
 import UserCarPut from "./Components/Car/PutCarUser"; //all
+import NewListUser from "./Components/New/NewListUser";
+import HomeUser from "./Components/Home/HomeUser";
 function App() {
   const [user, setUser] = React.useState(undefined);
+  console.log("user", user);
   if (user === undefined) {
     console.log(localStorage.getItem("user"));
     if (JSON.parse(localStorage.getItem("user")))
@@ -47,6 +50,7 @@ function App() {
           <Route path="/login" element={<Authorization />} />
           <Route path="/home/ADMIN" element={<HomeAdmin />} />
           <Route path="/home/EMPLOYEE" element={<HomeEmployee />} />
+          <Route path="/home/USER" element={<HomeUser />} />
           <Route exact path="/home/Employee" element={<HomeAdmin />} />
           <Route path="/home/Employee/add" element={<PostEmployee />} />
           <Route path="/home/Employee/put" element={<PutEmployee />} />
@@ -73,6 +77,7 @@ function App() {
           <Route path="/home/Car/Buy" element={<BuyCar />} />
           <Route path="/home/Car/User" element={<UserCarList />} />
           <Route path="/home/Car/User/put" element={<UserCarPut />} />
+          <Route path="/home/NewUser" element={<NewListUser />} />
         </Routes>
       </Router>
     </Context.Provider>

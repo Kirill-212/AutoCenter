@@ -53,6 +53,9 @@ namespace MicroServiceApp.ServiceRepository.Migrations
                     b.Property<DateTime>("DateOfRealeseCar")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("NameCarEquipment")
                         .HasColumnType("nvarchar(max)");
 

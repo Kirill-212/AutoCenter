@@ -18,6 +18,7 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             this.asyncRepositoryUser = asyncRepositoryUser;
         }
 
+
         [HttpGet("GetAllUsersNotAddedToEmp")]
         public async Task<IEnumerable<User>> GetAllUsersNotAddedToEmp()
         {
@@ -36,7 +37,6 @@ namespace MicroServiceApp.ServiceRepository.Controllers
             return await asyncRepositoryUser.GetByEmail(email);
         }
 
-        [Authorize(Roles = "ADMIN, EMPLOYEE")]
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {

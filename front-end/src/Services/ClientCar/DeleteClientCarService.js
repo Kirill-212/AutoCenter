@@ -4,8 +4,8 @@ const URI = "http://localhost:37766/ServiceCar/api/ClientCar";
 async function DeleteClientCar(registerNumber) {
   try {
     const response = await axios.delete(
-      URI + "?registerNumber=" + registerNumber
-      // { headers: GetJwtToken() },
+      URI + "?registerNumber=" + registerNumber,
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

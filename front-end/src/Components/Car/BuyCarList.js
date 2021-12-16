@@ -10,6 +10,10 @@ const CarList = () => {
 
   async function GetCarsList() {
     let response = await GetCars();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -33,43 +37,44 @@ const CarList = () => {
 
   function SetOption(data) {
     return data.map(function (obj) {
-      return {
-        options: (
-          <>
-            <a
-              className="text-reset"
-              href={`/home/Car/DetailsBuy?vin=${obj.vin}`}
-            >
-              <i class="fa fa-info-circle" aria-hidden="true"></i>
-            </a>
-            {obj.actionCar === null && (
+      if (!obj.isActive)
+        return {
+          options: (
+            <>
               <a
-                className="text-reset ml-1"
-                href={`/home/Car/Buy?vin=${obj.vin}&name=${obj.nameCarEquipment}&cost=${obj.cost}`}
+                className="text-reset"
+                href={`/home/Car/DetailsBuy?vin=${obj.vin}`}
               >
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <i className="fa fa-info-circle" aria-hidden="true"></i>
               </a>
-            )}
-            {obj.actionCar !== null && (
-              <a
-                className="text-reset ml-1"
-                href={`/home/Car/Buy?vin=${obj.vin}&name=${obj.nameCarEquipment}&cost=${obj.cost}&sharePercentage=${obj.actionCar.sharePercentage}`}
-              >
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              </a>
-            )}
-          </>
-        ),
-        vin: obj.vin,
-        nameCarEquipment: obj.nameCarEquipment,
-        cost: obj.cost + " $",
-        carMileage: obj.carMileage + " km",
-        dateOfRealeseCar: obj.dateOfRealeseCar,
-        actionCar:
-          obj.actionCar == null || obj.actionCar == undefined
-            ? "not found"
-            : obj.actionCar.sharePercentage + "%",
-      };
+              {obj.actionCar === null && (
+                <a
+                  className="text-reset ml-1"
+                  href={`/home/Car/Buy?vin=${obj.vin}&name=${obj.nameCarEquipment}&cost=${obj.cost}`}
+                >
+                  <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+                </a>
+              )}
+              {obj.actionCar !== null && (
+                <a
+                  className="text-reset ml-1"
+                  href={`/home/Car/Buy?vin=${obj.vin}&name=${obj.nameCarEquipment}&cost=${obj.cost}&sharePercentage=${obj.actionCar.sharePercentage}`}
+                >
+                  <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+                </a>
+              )}
+            </>
+          ),
+          vin: obj.vin,
+          nameCarEquipment: obj.nameCarEquipment,
+          cost: obj.cost + " $",
+          carMileage: obj.carMileage + " km",
+          dateOfRealeseCar: obj.dateOfRealeseCar,
+          actionCar:
+            obj.actionCar == null || obj.actionCar == undefined
+              ? "not found"
+              : obj.actionCar.sharePercentage + "%",
+        };
     });
   }
 
@@ -80,10 +85,14 @@ const CarList = () => {
   return (
     <div className="row mt-5">
       <div className="row">
-        <h1 className="d-flex justify-content-center align-items-center ">
-          Car List
-        </h1>
-        <p>{MessageError}</p>
+        <div className="row">
+          <h1 className="d-flex justify-content-center align-items-center ">
+            Car List
+          </h1>
+        </div>
+        <div className="row">
+          <p>{MessageError}</p>
+        </div>
       </div>
       <div className="row mt-5">
         {viewList && (

@@ -1,5 +1,6 @@
 ﻿using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceUser.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace MicroServiceApp.ServiceUser.Controllers
             this.asyncService = asyncService;
         }
 
+        [Authorize(Roles = " ADMIN, EMPLOYEE, USER")]
         [HttpGet]
         public async Task<IEnumerable<Role>> GetAll()
         {

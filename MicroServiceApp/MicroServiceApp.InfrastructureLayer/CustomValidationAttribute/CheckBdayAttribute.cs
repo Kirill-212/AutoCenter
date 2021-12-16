@@ -17,7 +17,7 @@ namespace MicroServiceApp.InfrastructureLayer.CustomValidationAttribute
                 }
                 else
                 {
-                    ErrorMessage = "Date of realese can not valid";
+                    ErrorMessage = "DBay is not correct";
                     return false;
                 }
             }

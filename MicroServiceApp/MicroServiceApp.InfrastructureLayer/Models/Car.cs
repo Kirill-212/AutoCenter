@@ -25,6 +25,8 @@ namespace MicroServiceApp.InfrastructureLayer.Models
 
         public ActionCar ActionCar { get; set; }
 
+        public bool IsActive { get; set; }
+
         public List<TestDrive> TestDrives { get; set; }
     }
 }

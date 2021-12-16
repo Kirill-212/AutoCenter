@@ -10,6 +10,10 @@ const OrderList = () => {
 
   async function GetOrdersList() {
     let response = await GetOrders();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -55,10 +59,14 @@ const OrderList = () => {
   return (
     <div className="row mt-5">
       <div className="row">
-        <h1 className="d-flex justify-content-center align-items-center ">
-          Order List
-        </h1>
-        <p>{MessageError}</p>
+        <div className="row mt-5">
+          <h1 className="d-flex justify-content-center align-items-center ">
+            Order List
+          </h1>
+        </div>
+        <div className="row mt-5">
+          <p>{MessageError}</p>
+        </div>
       </div>
       <div className="row mt-5">
         {viewList && (

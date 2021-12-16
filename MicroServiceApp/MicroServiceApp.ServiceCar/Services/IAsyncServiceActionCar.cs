@@ -4,6 +4,6 @@ namespace MicroServiceApp.ServiceCar.Services
 {
     public interface IAsyncServiceActionCar<T>
     {
-        Task<int> DeleteAll();
+        Task<int> DeleteAll( string jwt = null);
     }
 }

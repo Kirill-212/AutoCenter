@@ -20,6 +20,10 @@ const PostCar = () => {
 
   async function GetCarEuipment(name) {
     let response = await GetCarEuipmentByName(name);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -38,6 +42,10 @@ const PostCar = () => {
   async function GetVin() {
     setMessageError("");
     let response = await GetVins();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -104,6 +112,10 @@ const PostCar = () => {
   async function GetEmails() {
     setMessageError("");
     let response = await GetUsers();
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {
@@ -140,6 +152,10 @@ const PostCar = () => {
     event.preventDefault();
     setMessageError("");
     let response = await PostOrder(email, vin, registerNumber);
+    if (response.statusText === "Unauthorized") {
+      setMessageError("Unauthorized");
+      return;
+    }
     if (response === undefined) {
       setMessageError("Check connect server");
     } else {

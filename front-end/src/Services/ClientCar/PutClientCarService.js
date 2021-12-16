@@ -10,13 +10,14 @@ async function PutClientCar(
   try {
     const response = await axios.put(
       URI,
-      // { headers: GetJwtToken() },
+
       {
         Email: email,
         NewOwnerEmail: newOwnerEmail,
         OldRegisterNumber: oldRegisterNumber,
         NewRegisterNumber: newRegisterNumber,
-      }
+      },
+      { headers: GetJwtToken() }
     );
     return response;
   } catch (error) {

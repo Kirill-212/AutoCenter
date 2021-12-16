@@ -1,14 +1,17 @@
 using AutoMapper;
 using MicroServiceApp.HttpClientLayer;
+using MicroServiceApp.InfrastructureLayer.Auth;
 using MicroServiceApp.InfrastructureLayer.AutoMapper;
 using MicroServiceApp.InfrastructureLayer.ConsulSettings;
 using MicroServiceApp.InfrastructureLayer.Models;
 using MicroServiceApp.ServiceNew.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
@@ -25,6 +28,21 @@ namespace MicroServiceApp.ServiceNew
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                       .AddJwtBearer(options =>
+                       {
+                           options.RequireHttpsMetadata = false;
+                           options.TokenValidationParameters = new TokenValidationParameters
+                           {
+                               ValidateIssuer = true,
+                               ValidIssuer = AuthOptions.ISSUER,
+                               ValidateAudience = true,
+                               ValidAudience = AuthOptions.AUDIENCE,
+                               ValidateLifetime = true,
+                               IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                               ValidateIssuerSigningKey = true,
+                           };
+                       });
             services.AddCors();
             services.AddTransient<
                 IAsyncHttpClientNew<New>,
@@ -60,9 +78,11 @@ namespace MicroServiceApp.ServiceNew
 
             app.UseRouting();
             app.UseCors(
- options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
- );
+             options => options.WithOrigins("*")
+             .AllowAnyMethod().AllowAnyHeader()
+             );
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

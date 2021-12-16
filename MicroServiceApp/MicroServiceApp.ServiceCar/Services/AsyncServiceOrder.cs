@@ -31,9 +31,9 @@ namespace MicroServiceApp.ServiceCar.Services
             this.asyncHttpClientCar = asyncHttpClientCar;
         }
 
-        public async Task<int> Create(PostOrderDto item)
+        public async Task<int> Create(PostOrderDto item, string jwt = null)
         {
-            Car car = await asyncHttpClientCar.GetByVin(item.VIN);
+            Car car = await asyncHttpClientCar.SetJwt(jwt).GetByVin(item.VIN);
             CarEquipment carEquipment = await asyncRepositoryCarEquipment
                                                     .GetByName(car.NameCarEquipment);
             decimal totalCost = car.Cost;
@@ -42,7 +42,7 @@ namespace MicroServiceApp.ServiceCar.Services
                 totalCost += i.Value.Cost;
             }
             totalCost = car.ActionCar != null ?
-                (decimal)(Convert.ToDouble(totalCost) * (double)car.ActionCar.SharePercentage / 100.0) : totalCost;
+                (decimal)(Convert.ToDouble(totalCost) * (100-(double)car.ActionCar.SharePercentage) / 100.0) : totalCost;
             Order order = new() { 
                 CarId = car.Id,
                 DateOfBuyCar = DateTime.Now,
@@ -50,22 +50,22 @@ namespace MicroServiceApp.ServiceCar.Services
             };
             ClientCar clientCar = new() {
                 CarId = car.Id,
-                UserId = (await asyncHttpClientUser.GetByEmail(item.Email)).Id,
+                UserId = (await asyncHttpClientUser.SetJwt(jwt).GetByEmail(item.Email)).Id,
                 RegisterNumber = item.RegisterNumber
             };
 
-            return await asyncHttpClientOrder.Add(order) == 200 ?
-                await asyncHttpClientClientCar.Add(clientCar) : 404;
+            return await asyncHttpClientOrder.SetJwt(jwt).Add(order) == 200 ?
+                await asyncHttpClientClientCar.SetJwt(jwt).Add(clientCar) : 404;
         }
 
-        public async Task<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll( string jwt = null)
         {
-            return await asyncHttpClientOrder.GetAll();
+            return await asyncHttpClientOrder.SetJwt(jwt).GetAll();
         }
 
-        public async Task<Order> GetById(int id)
+        public async Task<Order> GetById(int id, string jwt = null)
         {
-            return await asyncHttpClientOrder.GetById(id);
+            return await asyncHttpClientOrder.SetJwt(jwt).GetById(id);
         }
     }
 }

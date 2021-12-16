@@ -31,19 +31,20 @@ namespace MicroServiceApp.ServiceCar.Services
             this.asyncHttpClientCar = asyncHttpClientCar;
         }
 
-        public async Task<int> Create(PostClientCarDto item)
+        public async Task<int> Create(PostClientCarDto item, string jwt = null)
         {
-            Car car = mapper.Map<Car>(item.postCarDto);
+            Car car = mapper.Map<Car>(item.postCarDto); 
+            car.IsActive = true;
             if (item.postCarDto.SharePercentage != null)
             {
-                ActionCar actionCar = await asyncHttpClientActionCar
+                ActionCar actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                     .GetBySharePercentage((int)item.postCarDto.SharePercentage);
                 if (actionCar == null)
                 {
                     actionCar = new();
                     actionCar.SharePercentage = (int)item.postCarDto.SharePercentage;
-                    await asyncHttpClientActionCar.Add(actionCar);
-                    actionCar = await asyncHttpClientActionCar
+                    await asyncHttpClientActionCar.SetJwt(jwt).Add(actionCar);
+                    actionCar = await asyncHttpClientActionCar.SetJwt(jwt)
                         .GetBySharePercentage((int)item.postCarDto.SharePercentage);
                     car.ActionCarId = actionCar.Id;
                 }
@@ -55,44 +56,44 @@ namespace MicroServiceApp.ServiceCar.Services
             await asyncHttpClientCar.Add(car);
             ClientCar clientCar = new()
             {
-                CarId = (await asyncHttpClientCar.GetByVin(item.postCarDto.VIN)).Id,
-                UserId = (await asyncHttpClientUser.GetByEmail(item.Email)).Id,
+                CarId = (await asyncHttpClientCar.SetJwt(jwt).GetByVin(item.postCarDto.VIN)).Id,
+                UserId = (await asyncHttpClientUser.SetJwt(jwt).GetByEmail(item.Email)).Id,
                 RegisterNumber = item.RegisterNumber
             };
 
-            return await asyncHttpClientClientCar.Add(clientCar);
+            return await asyncHttpClientClientCar.SetJwt(jwt).Add(clientCar);
         }
 
-        public async Task<IEnumerable<ClientCar>> GetAll()
+        public async Task<IEnumerable<ClientCar>> GetAll( string jwt = null)
         {
-            return await asyncHttpClientClientCar.GetAll();
+            return await asyncHttpClientClientCar.SetJwt(jwt).GetAll();
         }
 
-        public async Task<ClientCar> GetById(int id)
+        public async Task<ClientCar> GetById(int id, string jwt = null)
         {
-            return await asyncHttpClientClientCar.GetById(id);
+            return await asyncHttpClientClientCar.SetJwt(jwt).GetById(id);
         }
 
-        public async Task<int> Remove(string registerNumber)
+        public async Task<int> Remove(string registerNumber, string jwt = null)
         {
             if (string.IsNullOrEmpty(registerNumber)) return 404;
-            ClientCar clientCar = await asyncHttpClientClientCar.GetByRegisterNumber(registerNumber);
+            ClientCar clientCar = await asyncHttpClientClientCar.SetJwt(jwt).GetByRegisterNumber(registerNumber);
 
-            return clientCar == null ? 404 : await asyncHttpClientCar.Remove(clientCar.CarId);
+            return clientCar == null ? 404 : await asyncHttpClientCar.SetJwt(jwt).Remove(clientCar.CarId);
         }
 
-        public async Task<int> Update(PutClientCarDto item)
+        public async Task<int> Update(PutClientCarDto item, string jwt = null)
         {
-            ClientCar clientCar = await asyncHttpClientClientCar.GetByRegisterNumber(item.OldRegisterNumber);
+            ClientCar clientCar = await asyncHttpClientClientCar.SetJwt(jwt).GetByRegisterNumber(item.OldRegisterNumber);
             //User user = await asyncHttpClientUser.GetByEmail(item.Email);
             if (item.NewOwnerEmail != null)
             {
-                User user_new_owner = await asyncHttpClientUser.GetByEmail(item.NewOwnerEmail);
+                User user_new_owner = await asyncHttpClientUser.SetJwt(jwt).GetByEmail(item.NewOwnerEmail);
                 clientCar.UserId = user_new_owner.Id;
             }
             clientCar.RegisterNumber = item.NewRegisterNumber ?? item.OldRegisterNumber;
 
-            return await asyncHttpClientClientCar.Update(clientCar);
+            return await asyncHttpClientClientCar.SetJwt(jwt).Update(clientCar);
         }
     }
 }

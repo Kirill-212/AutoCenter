@@ -20,9 +20,9 @@ namespace MicroServiceApp.ServiceCar.Services
             this.asyncHttpClientTestDrive = asyncHttpClientTestDrive;
         }
 
-        public async Task<int> Create(PostTestDriveDto item)
+        public async Task<int> Create(PostTestDriveDto item, string jwt = null)
         {
-            IEnumerable<TestDrive> testDrives = await asyncHttpClientTestDrive.GetByVin(item.Vin);
+            IEnumerable<TestDrive> testDrives = await asyncHttpClientTestDrive.SetJwt(jwt).GetByVin(item.Vin);
             int hour;
             int inputHour = int.Parse(item.Time.Split(':')[0]);
             foreach (TestDrive i in testDrives)
@@ -36,7 +36,7 @@ namespace MicroServiceApp.ServiceCar.Services
                     }
                 }
             }
-            Car car = await asyncHttpClientCar.GetByVin(item.Vin);
+            Car car = await asyncHttpClientCar.SetJwt(jwt).GetByVin(item.Vin);
             if (car == null) return 400;
             TestDrive testDrive = new()
             {
@@ -46,19 +46,19 @@ namespace MicroServiceApp.ServiceCar.Services
                 Time = item.Time
             };
 
-            return await asyncHttpClientTestDrive.Add(testDrive);
+            return await asyncHttpClientTestDrive.SetJwt(jwt).Add(testDrive);
         }
 
-        public async Task<IEnumerable<TestDrive>> GetAll()
+        public async Task<IEnumerable<TestDrive>> GetAll( string jwt = null)
         {
-            return await asyncHttpClientTestDrive.GetAll();
+            return await asyncHttpClientTestDrive.SetJwt(jwt).GetAll();
         }
 
-        public async Task<int> Put(PutTestDriveDto item)
+        public async Task<int> Put(PutTestDriveDto item, string jwt = null)
         {
-            Car car = await asyncHttpClientCar.GetByVin(item.Vin);
+            Car car = await asyncHttpClientCar.SetJwt(jwt).GetByVin(item.Vin);
             if (car == null) return 400;
-            TestDrive testDrive = await asyncHttpClientTestDrive.GetByAllData(new()
+            TestDrive testDrive = await asyncHttpClientTestDrive.SetJwt(jwt).GetByAllData(new()
             {
                 Car = car,
                 Date = item.Date,
@@ -67,7 +67,7 @@ namespace MicroServiceApp.ServiceCar.Services
             if (testDrive == null) return 404;
             testDrive.IsActive = testDrive.IsActive != true;
 
-            return await asyncHttpClientTestDrive.Update(testDrive);
+            return await asyncHttpClientTestDrive.SetJwt(jwt).Update(testDrive);
         }
     }
 }
